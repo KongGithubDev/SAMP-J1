@@ -1,0 +1,22 @@
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(430) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_help"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(437) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_stats"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(444) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_car"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(481) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "Dialog_Show"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(488) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_gps"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(495) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "OpenInventory"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(502) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_ai"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(509) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "pc_cmd_phone"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(513) : ๏๐ๅไ๓๏๐ๅๆไๅํ่ๅ 209: ๔๓ํ๊๖่ "OnPlayerClickPlayerTextDraw" ไ๎๋ๆํเ โ๎็โ๐เ๙เ๒ ็ํเ๗ๅํ่ๅ
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(548) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "GetPlayerNameEx"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(551) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "playerData"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(551) : ๏๐ๅไ๓๏๐ๅๆไๅํ่ๅ 215: โ๛๐เๆๅํ่ๅ ํๅ ่์ๅๅ๒ ๔๔ๅ๊๒เ
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(551) : ๎๘่แ๊เ 001: ๎ๆ่ไเ๋๑ ๒๎๊ๅํ ";", ํ๎ ํเ้ไๅํ "]"
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(551) : ๎๘่แ๊เ 029: ํๅ๏๐เโ่๋ํ๎ๅ โ๛๐เๆๅํ่ๅ, ๏๐่ํ๒ ํ๎๋
+C:\Users\Administrator\Downloads\Gta Onelife City\Gta Onelife City\filterscripts\inv.pwn(551) : ๔เ๒เ๋ํเ ๎๘่แ๊เ 107: ๑๋่๘๊๎์ ์ํ๎ใ๎ ๎๘่แ๎๊ ํเ ๎ไํ๎้ ๑๒๐๎๊ๅ
+
+ส๎์๏่๋๖่ ๎๑๒เํ๎โ๋ๅํเ.
+
+Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
+
+
+ฮ๘่แ๎๊:13.

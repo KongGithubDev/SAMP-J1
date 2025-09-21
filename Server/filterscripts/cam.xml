@@ -1,0 +1,2059 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="file:///D|/GTA Baby Role Play/GTA Baby Role Play/pawno/xml/pawndoc.xsl" type="text/xsl"?>
+<doc source="D:\GTA Skyline Mobile\filterscripts\cam.pwn">
+	<assembly>
+		<name>cam.pwn</name>
+	</assembly>
+	<members>
+
+		<!-- enumerations -->
+		<member name="T:Coordinates" value="14">
+			<tagname value="Coordinates"/>
+			<member name="C:StartX" value="0">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:StartY" value="1">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:StartZ" value="2">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndX" value="3">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndY" value="4">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndZ" value="5">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:StartLookX" value="6">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:StartLookY" value="7">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:StartLookZ" value="8">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndLookX" value="9">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndLookY" value="10">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:EndLookZ" value="11">
+				<tagname value="Float"/>
+			</member>
+			<member name="C:MoveSpeed" value="12">
+			</member>
+			<member name="C:RotSpeed" value="13">
+			</member>
+		</member>
+		<member name="T:noclipenum" value="7">
+			<tagname value="noclipenum"/>
+			<member name="C:cameramode" value="0">
+			</member>
+			<member name="C:flyobject" value="1">
+			</member>
+			<member name="C:mode" value="2">
+			</member>
+			<member name="C:lrold" value="3">
+			</member>
+			<member name="C:udold" value="4">
+			</member>
+			<member name="C:lastmove" value="5">
+			</member>
+			<member name="C:accelmul" value="6">
+				<tagname value="Float"/>
+			</member>
+		</member>
+
+		<!-- constants -->
+		<member name="C:EOS" value="0">
+			<referrer name="strcopy"/>
+		</member>
+		<member name="C:cellmax" value="2147483647">
+			<referrer name="operator!(Float:)"/>
+		</member>
+		<member name="C:cellmin" value="-2147483648">
+			<referrer name="operator-(Float:)"/>
+		</member>
+		<member name="C:fScale" value="1084227584">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="C:false" value="0">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerSpawn"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="ShowPlayerMenu"/>
+			<referrer name="CancelFlyMode"/>
+		</member>
+		<member name="C:true" value="1">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="PreviewMovement"/>
+			<referrer name="FlyMode"/>
+		</member>
+
+		<!-- variables -->
+		<member name="F:IsCamMoving">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="ShowPlayerMenu"/>
+			<referrer name="PreviewMovement"/>
+		</member>
+		<member name="F:IsCreating">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerSpawn"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="FlyMode"/>
+		</member>
+		<member name="F:IsReSettingEnd">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+		</member>
+		<member name="F:IsReSettingStart">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+		</member>
+		<member name="F:MenuTimer">
+			<referrer name="ShowPlayerMenu"/>
+			<referrer name="PreviewMovement"/>
+		</member>
+		<member name="F:SettingFirstLoc">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+			<referrer name="FlyMode"/>
+		</member>
+		<member name="F:SettingLastLoc">
+			<tagname value="bool"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+		</member>
+		<member name="F:coordInfo">
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="PreviewMovement"/>
+			<referrer name="ExportMovement"/>
+		</member>
+		<member name="F:fPX">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:fPY">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:fPZ">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:fVX">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:fVY">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:fVZ">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:noclipdata">
+			<referrer name="OnFilterScriptExit"/>
+			<referrer name="OnPlayerConnect"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerUpdate"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="PreviewMovement"/>
+			<referrer name="MoveCamera"/>
+			<referrer name="CancelFlyMode"/>
+			<referrer name="FlyMode"/>
+		</member>
+		<member name="F:object_x">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:object_y">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+		<member name="F:object_z">
+			<tagname value="Float"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+		</member>
+
+		<!-- functions -->
+		<member name="M:operator!(Float:)" syntax="operator!(Float:)(oper)">
+			<tagname value="bool"/>
+			<stacksize value="1"/>
+			<dependency name="cellmax"/>
+			<param name="oper">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator%(_:,Float:)" syntax="operator%(_:,Float:)(oper1, oper2)">
+			<stacksize value="1"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator%(Float:,_:)" syntax="operator%(Float:,_:)(oper1, oper2)">
+			<stacksize value="1"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator%(Float:,Float:)" syntax="operator%(Float:,Float:)(oper1, oper2)">
+			<stacksize value="1"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator!=(Float:,_:)" syntax="operator!=(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator!=(Float:,Float:)" syntax="operator!=(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator-(_:,Float:)" syntax="operator-(_:,Float:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatsub"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator-(Float:,_:)" syntax="operator-(Float:,_:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatsub"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator+(Float:,_:)" syntax="operator+(Float:,_:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatadd"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator/(_:,Float:)" syntax="operator/(_:,Float:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatdiv"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator/(Float:,_:)" syntax="operator/(Float:,_:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatdiv"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator*(Float:,_:)" syntax="operator*(Float:,_:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatmul"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator++(Float:)" syntax="operator++(Float:)(oper)">
+			<tagname value="Float"/>
+			<stacksize value="1"/>
+			<dependency name="operator+(Float:,Float:)"/>
+			<param name="oper">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator-(Float:)" syntax="operator-(Float:)(oper)">
+			<tagname value="Float"/>
+			<stacksize value="1"/>
+			<referrer name="GetNextCameraPosition"/>
+			<dependency name="cellmin"/>
+			<param name="oper">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator--(Float:)" syntax="operator--(Float:)(oper)">
+			<tagname value="Float"/>
+			<stacksize value="1"/>
+			<dependency name="operator-(Float:,Float:)"/>
+			<param name="oper">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator-(Float:,Float:)" syntax="operator-(Float:,Float:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator--(Float:)"/>
+			<referrer name="GetNextCameraPosition"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator+(Float:,Float:)" syntax="operator+(Float:,Float:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator++(Float:)"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="MoveCamera"/>
+			<referrer name="GetNextCameraPosition"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator*(Float:,Float:)" syntax="operator*(Float:,Float:)(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="MoveCamera"/>
+			<referrer name="GetNextCameraPosition"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator==(Float:,Float:)" syntax="operator==(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator==(Float:,_:)" syntax="operator==(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator&gt;(Float:,Float:)" syntax="operator&gt;(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&gt;(Float:,_:)" syntax="operator&gt;(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator&gt;(_:,Float:)" syntax="operator&gt;(_:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&gt;=(Float:,Float:)" syntax="operator&gt;=(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&gt;=(Float:,_:)" syntax="operator&gt;=(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator&gt;=(_:,Float:)" syntax="operator&gt;=(_:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&lt;(Float:,Float:)" syntax="operator&lt;(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&lt;(Float:,_:)" syntax="operator&lt;(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator&lt;(_:,Float:)" syntax="operator&lt;(_:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&lt;=(Float:,Float:)" syntax="operator&lt;=(Float:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:operator&lt;=(Float:,_:)" syntax="operator&lt;=(Float:,_:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<referrer name="MoveCamera"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="oper2">
+			</param>
+		</member>
+		<member name="M:operator&lt;=(_:,Float:)" syntax="operator&lt;=(_:,Float:)(oper1, oper2)">
+			<tagname value="bool"/>
+			<stacksize value="4"/>
+			<dependency name="float"/>
+			<dependency name="floatcmp"/>
+			<param name="oper1">
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:@receivepacket" syntax="@receivepacket(packet[], size, source[])">
+			<attribute name="public"/>
+			<stacksize value="1"/>
+			<param name="packet">
+				<paraminfo> [] </paraminfo>
+				Contains the packet that was received.
+			</param>
+			<param name="size">
+				Contains the number of <b>bytes</b> (not cells) that are in the packet
+			</param>
+			<param name="source">
+				<paraminfo> [] </paraminfo>
+				Contains the IP address and the port number of the sender of this packet.
+			</param>
+			<summary>A packed was received.</summary>    <seealso name="@receivestring"/> <seealso name="sendpacket"/> <remarks>You must call this function before receiving the first packet. In other words, you should set up a port in main.</remarks> <remarks>If no port number has been explicitily chosen, the module will listen at port <c><b>9930</b></c>.</remarks> <remarks>This function does not work in the current SA:MP version!</remarks> <returns>The return value of this function is currently ignored.</returns>
+		</member>
+		<member name="M:@receivestring" syntax="@receivestring(message[], source[])">
+			<attribute name="public"/>
+			<stacksize value="1"/>
+			<param name="message">
+				<paraminfo> [] </paraminfo>
+				Contains the message (a zero-terminated string) that was received.
+			</param>
+			<param name="source">
+				<paraminfo> [] </paraminfo>
+				Contains the IP address and the port number of the sender of this packet.
+			</param>
+			<summary>A packed was received.</summary>   <seealso name="@receivepacket"/> <seealso name="sendstring"/> <remarks>The string is in unpacked format if the original packet contained a string in UTF-8 format. Note that messages in the ASCII character set are also UTF-8 compliant.</remarks> <remarks>This function does not work in the current SA:MP version!</remarks> <returns>The return value of this function is currently ignored.</returns>
+		</member>
+		<member name="M:AttachCameraToPlayerObject" syntax="AttachCameraToPlayerObject(playerid, playerobjectid)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="playerobjectid">
+			</param>
+		</member>
+		<member name="M:CancelEdit" syntax="CancelEdit(playerid)">
+			<attribute name="native"/>
+			<referrer name="CancelFlyMode"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:CancelFlyMode" syntax="CancelFlyMode(playerid)">
+			<stacksize value="4"/>
+			<referrer name="OnFilterScriptExit"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnDialogResponse"/>
+			<dependency name="CancelEdit"/>
+			<dependency name="DeletePVar"/>
+			<dependency name="DestroyPlayerObject"/>
+			<dependency name="IsReSettingEnd"/>
+			<dependency name="IsReSettingStart"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="SettingLastLoc"/>
+			<dependency name="TogglePlayerSpectating"/>
+			<dependency name="cameramode"/>
+			<dependency name="false"/>
+			<dependency name="flyobject"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:CreatePlayerObject" syntax="CreatePlayerObject(playerid, modelid, X, Y, Z, rX, rY, rZ, DrawDistance)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="modelid">
+			</param>
+			<param name="X">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="Y">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="Z">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="rX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="rY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="rZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="DrawDistance">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:DeletePVar" syntax="DeletePVar(playerid, varname[])">
+			<attribute name="native"/>
+			<referrer name="CancelFlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="varname">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:DestroyObject" syntax="DestroyObject(objectid)">
+			<attribute name="native"/>
+			<referrer name="PreviewMovement"/>
+			<param name="objectid">
+			</param>
+		</member>
+		<member name="M:DestroyPlayerObject" syntax="DestroyPlayerObject(playerid, objectid)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="objectid">
+			</param>
+		</member>
+		<member name="M:ExportMovement" syntax="ExportMovement(playerid, inputtext[])">
+			<attribute name="public"/>
+			<stacksize value="1404"/>
+			<referrer name="OnDialogResponse"/>
+			<dependency name="EndLookX"/>
+			<dependency name="EndLookY"/>
+			<dependency name="EndLookZ"/>
+			<dependency name="EndX"/>
+			<dependency name="EndY"/>
+			<dependency name="EndZ"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="ShowPlayerDialog"/>
+			<dependency name="StartLookX"/>
+			<dependency name="StartLookY"/>
+			<dependency name="StartLookZ"/>
+			<dependency name="StartX"/>
+			<dependency name="StartY"/>
+			<dependency name="StartZ"/>
+			<dependency name="coordInfo"/>
+			<dependency name="coordInfo"/>
+			<dependency name="fclose"/>
+			<dependency name="fopen"/>
+			<dependency name="format"/>
+			<dependency name="fwrite"/>
+			<dependency name="io_write"/>
+			<param name="playerid">
+			</param>
+			<param name="inputtext">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:FlyMode" syntax="FlyMode(playerid)">
+			<stacksize value="14"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnDialogResponse"/>
+			<dependency name="AttachCameraToPlayerObject"/>
+			<dependency name="CreatePlayerObject"/>
+			<dependency name="GetPlayerPos"/>
+			<dependency name="IsCreating"/>
+			<dependency name="SendClientMessage"/>
+			<dependency name="SetPVarInt"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="TogglePlayerSpectating"/>
+			<dependency name="cameramode"/>
+			<dependency name="flyobject"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<dependency name="true"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:GetMoveDirectionFromKeys" syntax="GetMoveDirectionFromKeys(ud, lr)">
+			<stacksize value="2"/>
+			<referrer name="OnPlayerUpdate"/>
+			<param name="ud">
+			</param>
+			<param name="lr">
+			</param>
+		</member>
+		<member name="M:GetNextCameraPosition" syntax="GetNextCameraPosition(move_mode, CP[], FV[], &amp;X, &amp;Y, &amp;Z)">
+			<stacksize value="1"/>
+			<referrer name="MoveCamera"/>
+			<dependency name="operator-(Float:)"/>
+			<dependency name="operator-(Float:,Float:)"/>
+			<dependency name="operator+(Float:,Float:)"/>
+			<dependency name="operator*(Float:,Float:)"/>
+			<param name="move_mode">
+			</param>
+			<param name="CP">
+				<paraminfo>Float [3] </paraminfo>
+			</param>
+			<param name="FV">
+				<paraminfo>Float [3] </paraminfo>
+			</param>
+			<param name="X">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="Y">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="Z">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetPVarType" syntax="GetPVarType(playerid, varname[])">
+			<attribute name="native"/>
+			<referrer name="OnPlayerCommandText"/>
+			<param name="playerid">
+			</param>
+			<param name="varname">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetPlayerCameraFrontVector" syntax="GetPlayerCameraFrontVector(playerid, &amp;x, &amp;y, &amp;z)">
+			<attribute name="native"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="MoveCamera"/>
+			<param name="playerid">
+			</param>
+			<param name="x">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="y">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="z">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetPlayerCameraPos" syntax="GetPlayerCameraPos(playerid, &amp;x, &amp;y, &amp;z)">
+			<attribute name="native"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="MoveCamera"/>
+			<param name="playerid">
+			</param>
+			<param name="x">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="y">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="z">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetPlayerKeys" syntax="GetPlayerKeys(playerid, &amp;keys, &amp;updown, &amp;leftright)">
+			<attribute name="native"/>
+			<referrer name="OnPlayerUpdate"/>
+			<param name="playerid">
+			</param>
+			<param name="keys">
+				<paraminfo> &amp; </paraminfo>
+			</param>
+			<param name="updown">
+				<paraminfo> &amp; </paraminfo>
+			</param>
+			<param name="leftright">
+				<paraminfo> &amp; </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetPlayerPos" syntax="GetPlayerPos(playerid, &amp;x, &amp;y, &amp;z)">
+			<attribute name="native"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="x">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="y">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+			<param name="z">
+				<paraminfo>Float &amp; </paraminfo>
+			</param>
+		</member>
+		<member name="M:GetTickCount" syntax="GetTickCount()">
+			<attribute name="native"/>
+			<referrer name="OnPlayerUpdate"/>
+			<referrer name="MoveCamera"/>
+		</member>
+		<member name="M:InterpolateCameraLookAt" syntax="InterpolateCameraLookAt(playerid, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut)">
+			<attribute name="native"/>
+			<referrer name="PreviewMovement"/>
+			<param name="playerid">
+			</param>
+			<param name="FromX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="FromY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="FromZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="time">
+			</param>
+			<param name="cut">
+			</param>
+		</member>
+		<member name="M:InterpolateCameraPos" syntax="InterpolateCameraPos(playerid, FromX, FromY, FromZ, ToX, ToY, ToZ, time, cut)">
+			<attribute name="native"/>
+			<referrer name="PreviewMovement"/>
+			<param name="playerid">
+			</param>
+			<param name="FromX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="FromY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="FromZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="ToZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="time">
+			</param>
+			<param name="cut">
+			</param>
+		</member>
+		<member name="M:IsNumeric" syntax="IsNumeric(szInput[])">
+			<stacksize value="3"/>
+			<referrer name="OnDialogResponse"/>
+			<param name="szInput">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:KillTimer" syntax="KillTimer(timerid)">
+			<attribute name="native"/>
+			<referrer name="ShowPlayerMenu"/>
+			<param name="timerid">
+			</param>
+		</member>
+		<member name="M:MoveCamera" syntax="MoveCamera(playerid)">
+			<stacksize value="21"/>
+			<referrer name="OnPlayerUpdate"/>
+			<dependency name="operator+(Float:,Float:)"/>
+			<dependency name="operator*(Float:,Float:)"/>
+			<dependency name="operator&lt;=(Float:,_:)"/>
+			<dependency name="GetNextCameraPosition"/>
+			<dependency name="GetPlayerCameraFrontVector"/>
+			<dependency name="GetPlayerCameraPos"/>
+			<dependency name="GetTickCount"/>
+			<dependency name="MovePlayerObject"/>
+			<dependency name="accelmul"/>
+			<dependency name="flyobject"/>
+			<dependency name="lastmove"/>
+			<dependency name="mode"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:MovePlayerObject" syntax="MovePlayerObject(playerid, objectid, X, Y, Z, Speed, RotX, RotY, RotZ)">
+			<attribute name="native"/>
+			<referrer name="MoveCamera"/>
+			<param name="playerid">
+			</param>
+			<param name="objectid">
+			</param>
+			<param name="X">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="Y">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="Z">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="Speed">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="RotX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="RotY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="RotZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnActorStreamIn" syntax="OnActorStreamIn(actorid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="actorid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:OnActorStreamOut" syntax="OnActorStreamOut(actorid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="actorid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:OnDialogResponse" syntax="OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])">
+			<attribute name="public"/>
+			<stacksize value="521"/>
+			<dependency name="AttachCameraToPlayerObject"/>
+			<dependency name="CancelFlyMode"/>
+			<dependency name="CreatePlayerObject"/>
+			<dependency name="DestroyPlayerObject"/>
+			<dependency name="EndX"/>
+			<dependency name="EndY"/>
+			<dependency name="EndZ"/>
+			<dependency name="ExportMovement"/>
+			<dependency name="FlyMode"/>
+			<dependency name="IsCreating"/>
+			<dependency name="IsNumeric"/>
+			<dependency name="IsReSettingEnd"/>
+			<dependency name="IsReSettingStart"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="PreviewMovement"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="SendClientMessage"/>
+			<dependency name="SetCameraBehindPlayer"/>
+			<dependency name="SetPVarInt"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="SettingLastLoc"/>
+			<dependency name="ShowPlayerDialog"/>
+			<dependency name="StartX"/>
+			<dependency name="StartY"/>
+			<dependency name="StartZ"/>
+			<dependency name="TogglePlayerSpectating"/>
+			<dependency name="cameramode"/>
+			<dependency name="coordInfo"/>
+			<dependency name="coordInfo"/>
+			<dependency name="false"/>
+			<dependency name="flyobject"/>
+			<dependency name="format"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<dependency name="strlen"/>
+			<dependency name="strval"/>
+			<dependency name="true"/>
+			<param name="playerid">
+			</param>
+			<param name="dialogid">
+			</param>
+			<param name="response">
+			</param>
+			<param name="listitem">
+			</param>
+			<param name="inputtext">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnEnterExitModShop" syntax="OnEnterExitModShop(playerid, enterexit, interiorid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="enterexit">
+			</param>
+			<param name="interiorid">
+			</param>
+		</member>
+		<member name="M:OnFilterScriptExit" syntax="OnFilterScriptExit()">
+			<attribute name="public"/>
+			<stacksize value="5"/>
+			<dependency name="CancelFlyMode"/>
+			<dependency name="cameramode"/>
+			<dependency name="noclipdata"/>
+		</member>
+		<member name="M:OnFilterScriptInit" syntax="OnFilterScriptInit()">
+			<attribute name="public"/>
+			<stacksize value="3"/>
+			<dependency name="print"/>
+		</member>
+		<member name="M:OnGameModeExit" syntax="OnGameModeExit()">
+			<stacksize value="1"/>
+		</member>
+		<member name="M:OnGameModeInit" syntax="OnGameModeInit()">
+			<stacksize value="1"/>
+		</member>
+		<member name="M:OnIncomingConnection" syntax="OnIncomingConnection(playerid, ip_address[], port)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="ip_address">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="port">
+			</param>
+		</member>
+		<member name="M:OnObjectMoved" syntax="OnObjectMoved(objectid)">
+			<stacksize value="1"/>
+			<param name="objectid">
+			</param>
+		</member>
+		<member name="M:OnPlayerClickMap" syntax="OnPlayerClickMap(playerid, fX, fY, fZ)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="fX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerClickPlayer" syntax="OnPlayerClickPlayer(playerid, clickedplayerid, source)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="clickedplayerid">
+			</param>
+			<param name="source">
+			</param>
+		</member>
+		<member name="M:OnPlayerClickPlayerTextDraw" syntax="OnPlayerClickPlayerTextDraw(playerid, playertextid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="playertextid">
+				<paraminfo>PlayerText </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerClickTextDraw" syntax="OnPlayerClickTextDraw(playerid, clickedid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="clickedid">
+				<paraminfo>Text </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerCommandText" syntax="OnPlayerCommandText(playerid, cmdtext[])">
+			<attribute name="public"/>
+			<stacksize value="6"/>
+			<dependency name="CancelFlyMode"/>
+			<dependency name="FlyMode"/>
+			<dependency name="GetPVarType"/>
+			<dependency name="IsCamMoving"/>
+			<dependency name="IsCreating"/>
+			<dependency name="IsReSettingEnd"/>
+			<dependency name="IsReSettingStart"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="SendClientMessage"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="SettingLastLoc"/>
+			<dependency name="accelmul"/>
+			<dependency name="cameramode"/>
+			<dependency name="coordInfo"/>
+			<dependency name="coordInfo"/>
+			<dependency name="false"/>
+			<dependency name="lastmove"/>
+			<dependency name="lrold"/>
+			<dependency name="mode"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<dependency name="strcmp"/>
+			<dependency name="true"/>
+			<dependency name="udold"/>
+			<param name="playerid">
+			</param>
+			<param name="cmdtext">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerConnect" syntax="OnPlayerConnect(playerid)">
+			<attribute name="public"/>
+			<stacksize value="1"/>
+			<dependency name="IsCamMoving"/>
+			<dependency name="IsCreating"/>
+			<dependency name="IsReSettingEnd"/>
+			<dependency name="IsReSettingStart"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="SettingLastLoc"/>
+			<dependency name="accelmul"/>
+			<dependency name="cameramode"/>
+			<dependency name="coordInfo"/>
+			<dependency name="coordInfo"/>
+			<dependency name="false"/>
+			<dependency name="lastmove"/>
+			<dependency name="lrold"/>
+			<dependency name="mode"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<dependency name="udold"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerDeath" syntax="OnPlayerDeath(playerid, killerid, reason)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="killerid">
+			</param>
+			<param name="reason">
+			</param>
+		</member>
+		<member name="M:OnPlayerDisconnect" syntax="OnPlayerDisconnect(playerid, reason)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="reason">
+			</param>
+		</member>
+		<member name="M:OnPlayerEditAttachedObject" syntax="OnPlayerEditAttachedObject(playerid, response, index, modelid, boneid, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="response">
+			</param>
+			<param name="index">
+			</param>
+			<param name="modelid">
+			</param>
+			<param name="boneid">
+			</param>
+			<param name="fOffsetX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fOffsetY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fOffsetZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fScaleX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fScaleY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fScaleZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerEditObject" syntax="OnPlayerEditObject(playerid, playerobject, objectid, response, fX, fY, fZ, fRotX, fRotY, fRotZ)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="playerobject">
+			</param>
+			<param name="objectid">
+			</param>
+			<param name="response">
+			</param>
+			<param name="fX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fRotZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerEnterCheckpoint" syntax="OnPlayerEnterCheckpoint(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerEnterRaceCheckpoint" syntax="OnPlayerEnterRaceCheckpoint(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerEnterVehicle" syntax="OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+			<param name="ispassenger">
+			</param>
+		</member>
+		<member name="M:OnPlayerExitVehicle" syntax="OnPlayerExitVehicle(playerid, vehicleid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+		</member>
+		<member name="M:OnPlayerExitedMenu" syntax="OnPlayerExitedMenu(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerFinishedDownloading" syntax="OnPlayerFinishedDownloading(playerid, virtualworld)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="virtualworld">
+			</param>
+		</member>
+		<member name="M:OnPlayerGiveDamage" syntax="OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="damagedid">
+			</param>
+			<param name="amount">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="weaponid">
+			</param>
+			<param name="bodypart">
+			</param>
+		</member>
+		<member name="M:OnPlayerGiveDamageActor" syntax="OnPlayerGiveDamageActor(playerid, damaged_actorid, amount, weaponid, bodypart)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="damaged_actorid">
+			</param>
+			<param name="amount">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="weaponid">
+			</param>
+			<param name="bodypart">
+			</param>
+		</member>
+		<member name="M:OnPlayerInteriorChange" syntax="OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="newinteriorid">
+			</param>
+			<param name="oldinteriorid">
+			</param>
+		</member>
+		<member name="M:OnPlayerKeyStateChange" syntax="OnPlayerKeyStateChange(playerid, newkeys, oldkeys)">
+			<attribute name="public"/>
+			<stacksize value="521"/>
+			<dependency name="operator+(Float:,Float:)"/>
+			<dependency name="EndLookX"/>
+			<dependency name="EndLookY"/>
+			<dependency name="EndLookZ"/>
+			<dependency name="EndX"/>
+			<dependency name="EndY"/>
+			<dependency name="EndZ"/>
+			<dependency name="GetPlayerCameraFrontVector"/>
+			<dependency name="GetPlayerCameraPos"/>
+			<dependency name="IsCreating"/>
+			<dependency name="IsReSettingEnd"/>
+			<dependency name="IsReSettingStart"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="SendClientMessage"/>
+			<dependency name="SettingFirstLoc"/>
+			<dependency name="SettingLastLoc"/>
+			<dependency name="ShowPlayerDialog"/>
+			<dependency name="StartLookX"/>
+			<dependency name="StartLookY"/>
+			<dependency name="StartLookZ"/>
+			<dependency name="StartX"/>
+			<dependency name="StartY"/>
+			<dependency name="StartZ"/>
+			<dependency name="coordInfo"/>
+			<dependency name="coordInfo"/>
+			<dependency name="fPX"/>
+			<dependency name="fPY"/>
+			<dependency name="fPZ"/>
+			<dependency name="fScale"/>
+			<dependency name="fVX"/>
+			<dependency name="fVY"/>
+			<dependency name="fVZ"/>
+			<dependency name="false"/>
+			<dependency name="floatmul"/>
+			<dependency name="format"/>
+			<dependency name="object_x"/>
+			<dependency name="object_y"/>
+			<dependency name="object_z"/>
+			<dependency name="true"/>
+			<param name="playerid">
+			</param>
+			<param name="newkeys">
+			</param>
+			<param name="oldkeys">
+			</param>
+		</member>
+		<member name="M:OnPlayerLeaveCheckpoint" syntax="OnPlayerLeaveCheckpoint(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerLeaveRaceCheckpoint" syntax="OnPlayerLeaveRaceCheckpoint(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerObjectMoved" syntax="OnPlayerObjectMoved(playerid, objectid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="objectid">
+			</param>
+		</member>
+		<member name="M:OnPlayerPickUpPickup" syntax="OnPlayerPickUpPickup(playerid, pickupid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="pickupid">
+			</param>
+		</member>
+		<member name="M:OnPlayerRequestClass" syntax="OnPlayerRequestClass(playerid, classid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="classid">
+			</param>
+		</member>
+		<member name="M:OnPlayerRequestDownload" syntax="OnPlayerRequestDownload(playerid, type, crc)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="type">
+			</param>
+			<param name="crc">
+			</param>
+		</member>
+		<member name="M:OnPlayerRequestSpawn" syntax="OnPlayerRequestSpawn(playerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerSelectObject" syntax="OnPlayerSelectObject(playerid, type, objectid, modelid, fX, fY, fZ)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="type">
+			</param>
+			<param name="objectid">
+			</param>
+			<param name="modelid">
+			</param>
+			<param name="fX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerSelectedMenuRow" syntax="OnPlayerSelectedMenuRow(playerid, row)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="row">
+			</param>
+		</member>
+		<member name="M:OnPlayerSpawn" syntax="OnPlayerSpawn(playerid)">
+			<attribute name="public"/>
+			<stacksize value="5"/>
+			<dependency name="IsCreating"/>
+			<dependency name="SendClientMessage"/>
+			<dependency name="false"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerStateChange" syntax="OnPlayerStateChange(playerid, newstate, oldstate)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="newstate">
+			</param>
+			<param name="oldstate">
+			</param>
+		</member>
+		<member name="M:OnPlayerStreamIn" syntax="OnPlayerStreamIn(playerid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerStreamOut" syntax="OnPlayerStreamOut(playerid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerTakeDamage" syntax="OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="issuerid">
+			</param>
+			<param name="amount">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="weaponid">
+			</param>
+			<param name="bodypart">
+			</param>
+		</member>
+		<member name="M:OnPlayerText" syntax="OnPlayerText(playerid, text[])">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="text">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnPlayerUpdate" syntax="OnPlayerUpdate(playerid)">
+			<attribute name="public"/>
+			<stacksize value="9"/>
+			<dependency name="GetMoveDirectionFromKeys"/>
+			<dependency name="GetPlayerKeys"/>
+			<dependency name="GetTickCount"/>
+			<dependency name="MoveCamera"/>
+			<dependency name="StopPlayerObject"/>
+			<dependency name="accelmul"/>
+			<dependency name="cameramode"/>
+			<dependency name="flyobject"/>
+			<dependency name="lastmove"/>
+			<dependency name="lrold"/>
+			<dependency name="mode"/>
+			<dependency name="noclipdata"/>
+			<dependency name="noclipdata"/>
+			<dependency name="udold"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnPlayerWeaponShot" syntax="OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="weaponid">
+			</param>
+			<param name="hittype">
+			</param>
+			<param name="hitid">
+			</param>
+			<param name="fX">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fY">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="fZ">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnRconCommand" syntax="OnRconCommand(cmd[])">
+			<stacksize value="1"/>
+			<param name="cmd">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnRconLoginAttempt" syntax="OnRconLoginAttempt(ip[], password[], success)">
+			<stacksize value="1"/>
+			<param name="ip">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="password">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="success">
+			</param>
+		</member>
+		<member name="M:OnTrailerUpdate" syntax="OnTrailerUpdate(playerid, vehicleid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+		</member>
+		<member name="M:OnUnoccupiedVehicleUpdate" syntax="OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, new_x, new_y, new_z, vel_x, vel_y, vel_z)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+			<param name="playerid">
+			</param>
+			<param name="passenger_seat">
+			</param>
+			<param name="new_x">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="new_y">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="new_z">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="vel_x">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="vel_y">
+				<paraminfo>Float </paraminfo>
+			</param>
+			<param name="vel_z">
+				<paraminfo>Float </paraminfo>
+			</param>
+		</member>
+		<member name="M:OnVehicleDamageStatusUpdate" syntax="OnVehicleDamageStatusUpdate(vehicleid, playerid)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:OnVehicleDeath" syntax="OnVehicleDeath(vehicleid, killerid)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+			<param name="killerid">
+			</param>
+		</member>
+		<member name="M:OnVehicleMod" syntax="OnVehicleMod(playerid, vehicleid, componentid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+			<param name="componentid">
+			</param>
+		</member>
+		<member name="M:OnVehiclePaintjob" syntax="OnVehiclePaintjob(playerid, vehicleid, paintjobid)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+			<param name="paintjobid">
+			</param>
+		</member>
+		<member name="M:OnVehicleRespray" syntax="OnVehicleRespray(playerid, vehicleid, color1, color2)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+			<param name="color1">
+			</param>
+			<param name="color2">
+			</param>
+		</member>
+		<member name="M:OnVehicleSirenStateChange" syntax="OnVehicleSirenStateChange(playerid, vehicleid, newstate)">
+			<stacksize value="1"/>
+			<param name="playerid">
+			</param>
+			<param name="vehicleid">
+			</param>
+			<param name="newstate">
+			</param>
+		</member>
+		<member name="M:OnVehicleSpawn" syntax="OnVehicleSpawn(vehicleid)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+		</member>
+		<member name="M:OnVehicleStreamIn" syntax="OnVehicleStreamIn(vehicleid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:OnVehicleStreamOut" syntax="OnVehicleStreamOut(vehicleid, forplayerid)">
+			<stacksize value="1"/>
+			<param name="vehicleid">
+			</param>
+			<param name="forplayerid">
+			</param>
+		</member>
+		<member name="M:PreviewMovement" syntax="PreviewMovement(playerid)">
+			<attribute name="public"/>
+			<stacksize value="11"/>
+			<referrer name="OnDialogResponse"/>
+			<dependency name="DestroyObject"/>
+			<dependency name="EndLookX"/>
+			<dependency name="EndLookY"/>
+			<dependency name="EndLookZ"/>
+			<dependency name="EndX"/>
+			<dependency name="EndY"/>
+			<dependency name="EndZ"/>
+			<dependency name="InterpolateCameraLookAt"/>
+			<dependency name="InterpolateCameraPos"/>
+			<dependency name="IsCamMoving"/>
+			<dependency name="MenuTimer"/>
+			<dependency name="MoveSpeed"/>
+			<dependency name="RotSpeed"/>
+			<dependency name="SetCameraBehindPlayer"/>
+			<dependency name="SetTimerEx"/>
+			<dependency name="StartLookX"/>
+			<dependency name="StartLookY"/>
+			<dependency name="StartLookZ"/>
+			<dependency name="StartX"/>
+			<dependency name="StartY"/>
+			<dependency name="StartZ"/>
+			<dependency name="coordInfo"/>
+			<dependency name="flyobject"/>
+			<dependency name="noclipdata"/>
+			<dependency name="true"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:SendClientMessage" syntax="SendClientMessage(playerid, color, message[])">
+			<attribute name="native"/>
+			<referrer name="OnPlayerSpawn"/>
+			<referrer name="OnPlayerCommandText"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="color">
+			</param>
+			<param name="message">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:SetCameraBehindPlayer" syntax="SetCameraBehindPlayer(playerid)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="PreviewMovement"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:SetPVarInt" syntax="SetPVarInt(playerid, varname[], int_value)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="varname">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="int_value">
+			</param>
+		</member>
+		<member name="M:SetTimerEx" syntax="SetTimerEx(funcname[], interval, repeating, format[], ...)">
+			<attribute name="native"/>
+			<referrer name="PreviewMovement"/>
+			<param name="funcname">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="interval">
+			</param>
+			<param name="repeating">
+			</param>
+			<param name="format">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="...">
+				<paraminfo> {Float,_} </paraminfo>
+			</param>
+		</member>
+		<member name="M:ShowPlayerDialog" syntax="ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[], button2[])">
+			<attribute name="native"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="ShowPlayerMenu"/>
+			<referrer name="ExportMovement"/>
+			<param name="playerid">
+			</param>
+			<param name="dialogid">
+			</param>
+			<param name="style">
+			</param>
+			<param name="caption">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="info">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="button1">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="button2">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:ShowPlayerMenu" syntax="ShowPlayerMenu(playerid)">
+			<attribute name="public"/>
+			<stacksize value="9"/>
+			<dependency name="IsCamMoving"/>
+			<dependency name="KillTimer"/>
+			<dependency name="MenuTimer"/>
+			<dependency name="ShowPlayerDialog"/>
+			<dependency name="false"/>
+			<param name="playerid">
+			</param>
+		</member>
+		<member name="M:StopPlayerObject" syntax="StopPlayerObject(playerid, objectid)">
+			<attribute name="native"/>
+			<referrer name="OnPlayerUpdate"/>
+			<param name="playerid">
+			</param>
+			<param name="objectid">
+			</param>
+		</member>
+		<member name="M:TogglePlayerSpectating" syntax="TogglePlayerSpectating(playerid, toggle)">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="CancelFlyMode"/>
+			<referrer name="FlyMode"/>
+			<param name="playerid">
+			</param>
+			<param name="toggle">
+			</param>
+		</member>
+		<member name="M:fclose" syntax="fclose(handle)">
+			<tagname value="bool"/>
+			<attribute name="native"/>
+			<referrer name="ExportMovement"/>
+			<param name="handle">
+				<paraminfo>File </paraminfo>
+				The file handle to close. Returned by <a href="#fopen">fopen</a>
+			</param>
+			<summary>Closes a file. Files should always be closed when the script no longer needs them (after reading/writing).</summary>  <remarks>Using an <b>invalid handle</b> will crash your server! Get a <b>valid handle</b> by using <a href="#fopen">fopen</a> or <a href="#ftemp">ftemp</a>.</remarks> <returns> <b><c>true</c></b>: The function executed successfully.<p/> <b><c>false</c></b>: The function failed to execute. The file could not be closed. It may already be closed. </returns>
+		</member>
+		<member name="M:float" syntax="float(value)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator*(Float:,_:)"/>
+			<referrer name="operator/(Float:,_:)"/>
+			<referrer name="operator/(_:,Float:)"/>
+			<referrer name="operator+(Float:,_:)"/>
+			<referrer name="operator-(Float:,_:)"/>
+			<referrer name="operator-(_:,Float:)"/>
+			<referrer name="operator==(Float:,_:)"/>
+			<referrer name="operator!=(Float:,_:)"/>
+			<referrer name="operator&gt;(Float:,_:)"/>
+			<referrer name="operator&gt;(_:,Float:)"/>
+			<referrer name="operator&gt;=(Float:,_:)"/>
+			<referrer name="operator&gt;=(_:,Float:)"/>
+			<referrer name="operator&lt;(Float:,_:)"/>
+			<referrer name="operator&lt;(_:,Float:)"/>
+			<referrer name="operator&lt;=(Float:,_:)"/>
+			<referrer name="operator&lt;=(_:,Float:)"/>
+			<param name="value">
+			</param>
+		</member>
+		<member name="M:floatadd" syntax="floatadd(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator+(Float:,_:)"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+				First float
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+				Second float
+			</param>
+			<summary>Adds two floats together. This function is redundant as the standard operator (+) does the same thing.</summary>   <seealso name="floatsub"/> <seealso name="floatmul"/> <seealso name="floatdiv"/> <returns>The sum of the two given floats.</returns>
+		</member>
+		<member name="M:floatcmp" syntax="floatcmp(oper1, oper2)">
+			<attribute name="native"/>
+			<referrer name="operator==(Float:,Float:)"/>
+			<referrer name="operator==(Float:,_:)"/>
+			<referrer name="operator!=(Float:,Float:)"/>
+			<referrer name="operator!=(Float:,_:)"/>
+			<referrer name="operator&gt;(Float:,Float:)"/>
+			<referrer name="operator&gt;(Float:,_:)"/>
+			<referrer name="operator&gt;(_:,Float:)"/>
+			<referrer name="operator&gt;=(Float:,Float:)"/>
+			<referrer name="operator&gt;=(Float:,_:)"/>
+			<referrer name="operator&gt;=(_:,Float:)"/>
+			<referrer name="operator&lt;(Float:,Float:)"/>
+			<referrer name="operator&lt;(Float:,_:)"/>
+			<referrer name="operator&lt;(_:,Float:)"/>
+			<referrer name="operator&lt;=(Float:,Float:)"/>
+			<referrer name="operator&lt;=(Float:,_:)"/>
+			<referrer name="operator&lt;=(_:,Float:)"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+				The first float value to compare
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+				The second float value to compare
+			</param>
+			<summary>floatcmp can be used to compare float values to each other, to validate the comparison.</summary>   <returns><b><c>0</c></b> if value does match, <b><c>1</c></b> if the first value is bigger and <b><c>-1</c></b> if the 2nd value is bigger.</returns>
+		</member>
+		<member name="M:floatdiv" syntax="floatdiv(dividend, divisor)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator/(Float:,_:)"/>
+			<referrer name="operator/(_:,Float:)"/>
+			<param name="dividend">
+				<paraminfo>Float </paraminfo>
+				First float
+			</param>
+			<param name="divisor">
+				<paraminfo>Float </paraminfo>
+				Second float (dividates the first float.)
+			</param>
+			<summary>Divide one float by another one. Redundant as the division operator (/) does the same thing.</summary>   <seealso name="floatadd"/> <seealso name="floatsub"/> <seealso name="floatmul"/> <returns>The quotient of the two given floats.</returns>
+		</member>
+		<member name="M:floatmul" syntax="floatmul(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator*(Float:,_:)"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+				First Float
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+				Second Float, the first one gets multiplied with
+			</param>
+			<summary>Multiplies two floats with each other.</summary>   <seealso name="floatadd"/> <seealso name="floatsub"/> <seealso name="floatdiv"/> <returns>The product of the two given floats.</returns>
+		</member>
+		<member name="M:floatsub" syntax="floatsub(oper1, oper2)">
+			<tagname value="Float"/>
+			<attribute name="native"/>
+			<referrer name="operator-(Float:,_:)"/>
+			<referrer name="operator-(_:,Float:)"/>
+			<param name="oper1">
+				<paraminfo>Float </paraminfo>
+				First Float
+			</param>
+			<param name="oper2">
+				<paraminfo>Float </paraminfo>
+				Second Float (gets subtracted from the first float.)
+			</param>
+			<summary>Subtracts one float from another one. Note that this function has no real use, as one can simply use the standard operator (-) instead.</summary>   <seealso name="floatadd"/> <seealso name="floatmul"/> <seealso name="floatdiv"/> <returns>The difference of the two given floats.</returns>
+		</member>
+		<member name="M:fopen" syntax="fopen(name[], mode)">
+			<tagname value="File"/>
+			<attribute name="native"/>
+			<referrer name="ExportMovement"/>
+			<param name="name">
+				<paraminfo> [] </paraminfo>
+				The path to the file to open (if just a filename is specified, it will open the file with the name specified in the 'scriptfiles' folder)
+			</param>
+			<param name="mode">
+				<paraminfo>filemode </paraminfo>
+				The mode to open the file with, see below (optional=<b><c>io_readwrite</c></b>)
+			</param>
+			<summary>Open a file (to read from or write to).</summary>   <remarks>This function can't access files outside the 'scriptfiles' folder!</remarks> <remarks>If you use <a href="#io_read">io_read</a> and the file doesn't exist, it will return a <b><c>NULL</c></b> reference. Using <b>invalid references</b> on file functions will <b>crash</b> your server!</remarks> <remarks> <b>Modes:</b><p/> <ul> <li><b><c>io_read</c></b> - reads from the file.</li> <li><b><c>io_write</c></b> - write in the file, or create the file if it does not exist. Erases all existing contents.</li> <li><b><c>io_readwrite</c></b> - reads the file or creates it if it doesn't already exist.</li> <li><b><c>io_append</c></b> - appends (adds) to file, write-only. If the file does not exist, it is created.</li> </ul> </remarks> <returns>Returns the file handle. This handle is used for reading and writing. <b><c>0</c></b> if failed to open file.</returns>
+		</member>
+		<member name="M:format" syntax="format(output[], len, format[], ...)">
+			<attribute name="native"/>
+			<referrer name="OnPlayerKeyStateChange"/>
+			<referrer name="OnDialogResponse"/>
+			<referrer name="ExportMovement"/>
+			<param name="output">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="len">
+			</param>
+			<param name="format">
+				<paraminfo> [] </paraminfo>
+			</param>
+			<param name="...">
+				<paraminfo> {Float,_} </paraminfo>
+			</param>
+		</member>
+		<member name="M:fwrite" syntax="fwrite(handle, string[])">
+			<attribute name="native"/>
+			<referrer name="ExportMovement"/>
+			<param name="handle">
+				<paraminfo>File </paraminfo>
+				The handle of the file to write to (returned by <a href="#fopen">fopen</a>)
+			</param>
+			<param name="string">
+				<paraminfo> [] </paraminfo>
+				The string of text to write in to the file
+			</param>
+			<summary>Write text into a file.</summary>   <remarks>Using an <b>invalid handle</b> will crash your server! Get a <b>valid handle</b> by using <a href="#fopen">fopen</a> or <a href="#ftemp">ftemp</a>.</remarks> <remarks>This functions writes to the file in UTF-8, which does not support some localized language symbols.</remarks> <remarks>This function doesn't support <a href="#strpack">packed strings</a>.</remarks> <returns>The length of the written string as an integer.</returns>
+		</member>
+		<member name="M:print" syntax="print(string[])">
+			<attribute name="native"/>
+			<referrer name="OnFilterScriptInit"/>
+			<param name="string">
+				<paraminfo> [] </paraminfo>
+			</param>
+		</member>
+		<member name="M:strcat" syntax="strcat(dest[], source[], maxlength)">
+			<attribute name="native"/>
+			<referrer name="strcopy"/>
+			<param name="dest">
+				<paraminfo> [] </paraminfo>
+				The string to store the two concatenated strings in
+			</param>
+			<param name="source">
+				<paraminfo> [] </paraminfo>
+				The source string
+			</param>
+			<param name="maxlength">
+				The maximum length of the destination (optional=<b><c>sizeof dest</c></b>)
+			</param>
+			<summary>This function concatenates (joins together) two strings into the destination string.</summary>    <seealso name="strcmp"/> <seealso name="strfind"/> <seealso name="strtok"/> <seealso name="strdel"/> <seealso name="strins"/> <seealso name="strlen"/> <seealso name="strmid"/> <seealso name="strpack"/> <seealso name="strval"/> <returns>The length of the new destination string.</returns>
+		</member>
+		<member name="M:strcmp" syntax="strcmp(string1[], string2[], ignorecase, length)">
+			<attribute name="native"/>
+			<referrer name="strequal"/>
+			<referrer name="OnPlayerCommandText"/>
+			<param name="string1">
+				<paraminfo> [] </paraminfo>
+				The first string to compare
+			</param>
+			<param name="string2">
+				<paraminfo> [] </paraminfo>
+				The second string to compare
+			</param>
+			<param name="ignorecase">
+				<paraminfo>bool </paraminfo>
+				When set to true, the case doesn't matter - HeLLo is the same as Hello. When false, they're not the same (optional=<b><c>0</c></b>)
+			</param>
+			<param name="length">
+				When this length is set, the first x chars will be compared - doing "Hello" and "Hell No" with a length of 4 will say it's the same string (optional=<b><c>cellmax</c></b>)
+			</param>
+			<summary>Compares two strings to see if they are the same.</summary>     <seealso name="strfind"/> <seealso name="strtok"/> <seealso name="strdel"/> <seealso name="strins"/> <seealso name="strlen"/> <seealso name="strmid"/> <seealso name="strpack"/> <seealso name="strval"/> <seealso name="strcat"/> <seealso name="strequal"/> <remarks>This function returns <b><c>0</c></b> if either string is empty. Check for null strings with <c>isnull()</c>. If you do not, for example, people can login to anyone's account by simply entering a blank password. </remarks> <remarks> <code> #if !defined isnull<p/> &#9;#define isnull(%1) ((!(%1[0])) || (((%1[0]) == '\1') &amp;&amp; (!(%1[1]))))<p/> #endif </code> </remarks> <remarks>If you compare strings from a text file, you should take in to account the 'carriage return' and 'new line' special characters (\r \n), as they are included, when using fread.</remarks> <returns> <b><c>0</c></b> if strings match each other on given length;.<p/> <b><c>1</c></b> or <b><c>-1</c></b> if some character do not match: <c>string1[i] - string2[i]</c>.<p/> <b>difference in number of characters</b> if one string matches only part of another string. </returns>
+		</member>
+		<member name="M:strcopy" syntax="strcopy(dest[], source[], maxlength)">
+			<stacksize value="5"/>
+			<dependency name="EOS"/>
+			<dependency name="strcat"/>
+			<param name="dest">
+				<paraminfo> [] </paraminfo>
+				The string to copy the source string into
+			</param>
+			<param name="source">
+				<paraminfo> [] </paraminfo>
+				The source string
+			</param>
+			<param name="maxlength">
+				The maximum length of the destination (optional=<b><c>sizeof dest</c></b>)
+			</param>
+			<summary>Copies a string into the destination string.</summary>    <seealso name="strcat"/> <returns>The length of the new destination string.</returns>
+		</member>
+		<member name="M:strequal" syntax="strequal(string1[], string2[], ignorecase, length)">
+			<tagname value="bool"/>
+			<stacksize value="6"/>
+			<dependency name="strcmp"/>
+			<param name="string1">
+				<paraminfo> [] </paraminfo>
+				The first string to compare
+			</param>
+			<param name="string2">
+				<paraminfo> [] </paraminfo>
+				The second string to compare
+			</param>
+			<param name="ignorecase">
+				<paraminfo>bool </paraminfo>
+				When set to true, the case doesn't matter - HeLLo is the same as Hello. When false, they're not the same (optional=<b><c>0</c></b>)
+			</param>
+			<param name="length">
+				When this length is set, the first x chars will be compared - doing "Hello" and "Hell No" with a length of 4 will say it's the same string (optional=<b><c>cellmax</c></b>)
+			</param>
+			<summary>Compares two strings to see if they are the same.</summary>     <seealso name="strcmp"/> <remarks>This is a conveniece function that depends on <a href="#strcmp">strcmp</a>.</remarks> <returns><b><c>true</c></b> if the strings match each other on given length, <b><c>false</c></b> otherwise.</returns>
+		</member>
+		<member name="M:strlen" syntax="strlen(string[])">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<param name="string">
+				<paraminfo> [] </paraminfo>
+				The string to get the length of
+			</param>
+			<summary>Get the length of a string.</summary>  <seealso name="strcmp"/> <seealso name="strfind"/> <seealso name="strtok"/> <seealso name="strdel"/> <seealso name="strins"/> <seealso name="strmid"/> <seealso name="strpack"/> <seealso name="strval"/> <seealso name="strcat"/> <returns>The length of the string as an integer.</returns>
+		</member>
+		<member name="M:strval" syntax="strval(string[])">
+			<attribute name="native"/>
+			<referrer name="OnDialogResponse"/>
+			<param name="string">
+				<paraminfo> [] </paraminfo>
+				The string you want to convert to an integer
+			</param>
+			<summary>Convert a string to an integer.</summary>  <seealso name="strcmp"/> <seealso name="strfind"/> <seealso name="strtok"/> <seealso name="strdel"/> <seealso name="strins"/> <seealso name="strlen"/> <seealso name="strmid"/> <seealso name="strpack"/> <seealso name="strcat"/> <returns>The integer value of the string. <b><c>0</c></b> if the string is not numeric.</returns>
+		</member>
+
+	</members>
+</doc>

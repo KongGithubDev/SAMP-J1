@@ -1,0 +1,8 @@
+ms_system/UR_LOCKER.pwn(191) : ่ไๅํ๒่๔่๊เ๒๎๐๓ ๏๐่๑โ๎ๅํ๎ ็ํเ๗ๅํ่ๅ, ํ๎ ๎ํ ํๅ ่๑๏๎๋็๓ๅ๒๑: "text"
+ms_system/UR_LOCKER.pwn(220) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "count"
+ms_system/UR_LOCKER.pwn(387) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "d"
+ms_system/UR_LOCKER.pwn(396) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "d"
+C:\Users\Administrator\Downloads\สคริปอัพออโต้ฟาม\สคริปอัพออโต้ฟาม\gamemodes\main.pwn(253) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "FashionOn"
+C:\Users\Administrator\Downloads\สคริปอัพออโต้ฟาม\สคริปอัพออโต้ฟาม\gamemodes\main.pwn(255) : ่ไๅํ๒่๔่๊เ๒๎๐๓ ๏๐่๑โ๎ๅํ๎ ็ํเ๗ๅํ่ๅ, ํ๎ ๎ํ ํๅ ่๑๏๎๋็๓ๅ๒๑: "RepairNpc"
+Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
+

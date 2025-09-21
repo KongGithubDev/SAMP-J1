@@ -1,0 +1,16 @@
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(24) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "INVALID_STREAMER_ID"
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(38) : ๎๘่แ๊เ 010: ํๅโๅ๐ํเ ๔๓ํ๊๖่ ่๋่ ๎แ๚โ๋ๅํ่ๅ
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(41) : ๎๘่แ๊เ 021: ่ไๅํ๒่๔่๊เ๒๎๐ "@yH_OnPlayerConnect@004" ๓ๆๅ ๎แ๚โ๋ๅํ
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(47) : ๎๘่แ๊เ 021: ่ไๅํ๒่๔่๊เ๒๎๐ "@yH_OnPlayerDisconnect@004" ๓ๆๅ ๎แ๚โ๋ๅํ
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(50) : ๎๘่แ๊เ 017: ํๅ๎แ๚โ๋ๅํํ๛้ ๑่์โ๎๋ "ProgressObject"
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(50) : ๏๐ๅไ๓๏๐ๅๆไๅํ่ๅ 215: โ๛๐เๆๅํ่ๅ ํๅ ่์ๅๅ๒ ๔๔ๅ๊๒เ
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(50) : ๎๘่แ๊เ 001: ๎ๆ่ไเ๋๑ ๒๎๊ๅํ ";", ํ๎ ํเ้ไๅํ "]"
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(50) : ๎๘่แ๊เ 029: ํๅ๏๐เโ่๋ํ๎ๅ โ๛๐เๆๅํ่ๅ, ๏๐่ํ๒ ํ๎๋
+D:\GTA Siam City Last\gamemodes\job\shell.pwn(50) : ๔เ๒เ๋ํเ ๎๘่แ๊เ 107: ๑๋่๘๊๎์ ์ํ๎ใ๎ ๎๘่แ๎๊ ํเ ๎ไํ๎้ ๑๒๐๎๊ๅ
+
+ส๎์๏่๋๖่ ๎๑๒เํ๎โ๋ๅํเ.
+
+Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
+
+
+ฮ๘่แ๎๊:8.

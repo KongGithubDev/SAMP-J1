@@ -1,0 +1,7 @@
+C:\Users\pc\OneDrive\Desktop\โฟลเดอร์ใหม่ (3)\ล่าสุด\gamemodes\inventory/weapon.pwn(237) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "name"
+C:\Users\pc\OneDrive\Desktop\โฟลเดอร์ใหม่ (3)\ล่าสุด\gamemodes\ms_system/UR_LOCKER.pwn(220) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "count"
+C:\Users\pc\OneDrive\Desktop\โฟลเดอร์ใหม่ (3)\ล่าสุด\gamemodes\ms_system/UR_LOCKER.pwn(387) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "d"
+C:\Users\pc\OneDrive\Desktop\โฟลเดอร์ใหม่ (3)\ล่าสุด\gamemodes\ms_system/UR_LOCKER.pwn(396) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "d"
+C:\Users\pc\OneDrive\Desktop\โฟลเดอร์ใหม่ (3)\ล่าสุด\gamemodes\inventory/weapon.pwn(34) : ่ไๅํ๒่๔่๊เ๒๎๐ ํๅ ่๑๏๎๋็๓ๅ๒๑: "weaponRepairName"
+Pawn compiler 3.2.3664	 	 	Copyright (c) 1997-2016, ITB CompuPhase
+

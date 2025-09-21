@@ -1,0 +1,21 @@
+﻿echo Executing Server Config...
+lanmode 0
+rcon_password XRichard/2564
+maxplayers 100
+blind 127.0.0.1
+port 7777
+hostname เซิร์ฟเวอร์เปิดใหม่ไฟแรงแซงทางโค้ง
+gamemode0 career 1
+filterscripts sampvoice nanimation
+plugins MapAndreas Whirlpool crashdetect mysql wp pawncmd pawnraknet pawnregex pawn-memory cec streamer sscanf sampvoice GPS
+announce 0
+chatlogging 0
+weburl www.sa-mp.com
+onfoot_rate 40
+incar_rate 40
+weapon_rate 40
+stream_distance 200.0
+stream_rate 1000
+maxnpc 10
+logtimeformat [%H:%M:%S]
+language English
