@@ -970,7 +970,10 @@ stock INVENTORY_UPDATE(playerid, enable = false) {
             PlayerTextDrawSetSelectable(playerid, INVENTORY_ITEMSLOT[playerid][slot], 1);
             PlayerTextDrawSetString(playerid, INVENTORY_ITEMSLOT[playerid][slot], itemData[index][itemPng]);
             PlayerTextDrawShow(playerid, INVENTORY_ITEMSLOT[playerid][slot]);
-            format(string, sizeof(string), "%d.%d", invData[playerid][i][invQuantity], itemData[index][itemQuantity]);
+
+			new Float:kgret_getitem;
+			Inventory_GetItemWeightByName(invData[playerid][i][invItem], kgret_getitem);
+            format(string, sizeof(string), "%d.%d (%.1f)", invData[playerid][i][invQuantity], itemData[index][itemQuantity], (kgret_getitem * invData[playerid][i][invQuantity]));
             PlayerTextDrawSetString(playerid, INVENTORY_ITEMSLOT[playerid][30+slot], string);
             PlayerTextDrawShow(playerid, INVENTORY_ITEMSLOT[playerid][30+slot]);
         }
@@ -987,7 +990,9 @@ stock INVENTORY_UPDATE(playerid, enable = false) {
             break;
         }
     }
-	format(string, sizeof(string), "%d/%d", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+	new Float:kgall;
+	Inventory_Items_KG(playerid, kgall);
+	format(string, sizeof(string), "%d/%d (%.1f/%.1f g)", Inventory_Items(playerid), playerData[playerid][pMaxItem], kgall, GetPlayerMaxWeight(playerid));
 	PlayerTextDrawSetString(playerid, INVENTORY_TDMOD[playerid][1], string);
     return true;
 }

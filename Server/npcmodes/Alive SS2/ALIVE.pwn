@@ -20959,7 +20959,7 @@ CMD:wavegiveitem(playerid,params[])
 		new id = Inventory_Add(userid, itemData[i][itemName], amount);
 
 		if (id == -1)
-		    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+		    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 //	    Inventory_Add(userid, itemData[i][itemName], amount);
 	    SendAdminMessage(COLOR_ADMIN, "AdmLog: %s ได้ให้ไอเท็ม %s จำนวน %d กับ %s", GetPlayerNameEx(playerid), item, amount, GetPlayerNameEx(userid));

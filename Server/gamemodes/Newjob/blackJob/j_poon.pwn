@@ -136,7 +136,7 @@ PlayerPOONUnfreeze(playerid, number)
 
     new id = Inventory_Add(playerid, POONNAME, 1);
     if (id == -1)
-        return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+        return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
     SendClientMessage(playerid, COLOR_WHITE, "คุณได้รับ {FF0000}"#POONNAME" +1");
 

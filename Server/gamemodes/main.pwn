@@ -34,6 +34,8 @@
 
 #include	<easyDialog>
 #include 	<OPVD>
+#include	<YSF>
+#include 	<VehiclePartPosition>
 
 #include	<discord-connector>
 
@@ -52,6 +54,8 @@
 #if !defined IsValidVehicle
     native IsValidVehicle(vehicleid);
 #endif
+
+#define 	GetPlayerMaxWeight(%0) 	playerData[%0][pMaxWeight]
 
 #define		SECONDS_TO_LOGIN 		60
 
@@ -386,6 +390,7 @@ enum PLAYER_DATA
  	pEditGate,
     pCheckpoint,
     pPoint,
+	Float:pMaxWeight,
     pRadioID,
 	pID,
 	pTargetFrisk,
@@ -661,7 +666,8 @@ enum CAR_DATA
 	carObjects[2],
 	carTimer,
 	carWeapons[5],
-	carAmmo[5]
+	carAmmo[5],
+	Float:carMaxWeight
 };
 new carData[MAX_VEHICLES][CAR_DATA];
 
@@ -739,109 +745,110 @@ enum ITEM_NAME_DATA
 {
     itemName[32],
     itemPng[32], 
-    itemQuantity, 
+    itemQuantity,
+	Float:itemWeight, //G
 	itemModel
 };
 
 new const itemData[][ITEM_NAME_DATA] =
 {
-	{ "ไม่พบข้อมูล", "ms_uiinv:item_0", 0},
-    { "ปูน", "ms_uiinv:item_1", 100},
-    { "สายไฟ", "ms_uiinv:item_2", 100},
-	{ "รังผึ่ง", "ms_uiinv:item_3", 100},
-    { "ส้ม", "ms_uiinv:item_4", 40},
-    { "ข้าว", "ms_uiinv:item_5", 40},
-    { "ปลาหมึก", "ms_uiinv:item_6", 40},
-    { "แร่เหลือง", "ms_uiinv:item_7", 40},
-	{ "แร่เขียว", "ms_uiinv:item_8", 100},
-	{ "แร่ฟ้า", "ms_uiinv:item_9", 100},
-	{ "แร่แดง", "ms_uiinv:item_10", 100},
-	{ "แร่", "ms_uiinv:item_11", 100},
-	{ "สนับมือ", "ms_uiinv:item_12", 1 },
-	{ "ไม้สนุ๊ก", "ms_uiinv:item_13", 1 },
-	{ "ไม้เบสบอล", "ms_uiinv:item_14", 1 },
-	{ "ไม้กอล์ฟ", "ms_uiinv:item_15", 1 },
-	{ "ไอติม", "ms_uiinv:item_16", 1 },
-	{ "มือถือ", "ms_uiinv:item_17", 100 },
-	{ "พิซซ่า", "ms_uiinv:item_18", 100 },
-	{ "น้ำเปล่า", "ms_uiinv:item_19", 100 },
-	{"กาชาปอง", "ms_uiinv:item_20", 100},
+	{ "ไม่พบข้อมูล", "ms_uiinv:item_0", 0, 0.0 },
+    { "ปูน", "ms_uiinv:item_1", 100, 1.0 },
+    { "สายไฟ", "ms_uiinv:item_2", 100, 1},
+	{ "รังผึ่ง", "ms_uiinv:item_3", 100, 1},
+    { "ส้ม", "ms_uiinv:item_4", 40, 1.0},
+    { "ข้าว", "ms_uiinv:item_5", 40, 1.0},
+    { "ปลาหมึก", "ms_uiinv:item_6", 40, 1.0},
+    { "แร่เหลือง", "ms_uiinv:item_7", 40, 1.0},
+	{ "แร่เขียว", "ms_uiinv:item_8", 100, 1.0},
+	{ "แร่ฟ้า", "ms_uiinv:item_9", 100, 1.0},
+	{ "แร่แดง", "ms_uiinv:item_10", 100, 1.0},
+	{ "แร่", "ms_uiinv:item_11", 100, 1.0},
+	{ "สนับมือ", "ms_uiinv:item_12", 1, 1.0},
+	{ "ไม้สนุ๊ก", "ms_uiinv:item_13", 1, 1.0},
+	{ "ไม้เบสบอล", "ms_uiinv:item_14", 1, 1.0},
+	{ "ไม้กอล์ฟ", "ms_uiinv:item_15", 1, 1.0},
+	{ "ไอติม", "ms_uiinv:item_16", 1, 1.0},
+	{ "มือถือ", "ms_uiinv:item_17", 100, 1.0},
+	{ "พิซซ่า", "ms_uiinv:item_18", 100, 1.0},
+	{ "น้ำเปล่า", "ms_uiinv:item_19", 100, 1.0},
+	{"กาชาปอง", "ms_uiinv:item_20", 100, 1.0},
 
-	{"เบ็ดตกปลา", "ms_uiinv:item_21", 100},
-	{"เหยื่อ", "ms_uiinv:item_22", 100},
-	{"ปลาทู", "ms_uiinv:item_23", 100},
-	{"ปลาแซลม่อน", "ms_uiinv:item_24", 100},
-	{"ปลานิล", "ms_uiinv:item_25", 100},
-	{"ปู", "ms_uiinv:item_26", 100},
-	{"กุ้ง", "ms_uiinv:item_27", 100},
+	{"เบ็ดตกปลา", "ms_uiinv:item_21", 100, 1.0},
+	{"เหยื่อ", "ms_uiinv:item_22", 100, 1.0},
+	{"ปลาทู", "ms_uiinv:item_23", 100, 1.0},
+	{"ปลาแซลม่อน", "ms_uiinv:item_24", 100, 1.0},
+	{"ปลานิล", "ms_uiinv:item_25", 100, 1.0},
+	{"ปู", "ms_uiinv:item_26", 100, 1.0},
+	{"กุ้ง", "ms_uiinv:item_27", 100, 1.0},
 
-	{"คาร์บอน", "ms_uiinv:item_63", 50},
-	{"เศษไม้", "ms_uiinv:item_64", 50},
-	{"เศษเหล็ก", "ms_uiinv:item_65", 50},
-	{"แท่งไม้", "ms_uiinv:item_66", 50},
-	{"แท่งเหล็ก", "ms_uiinv:item_67", 50},
+	{"คาร์บอน", "ms_uiinv:item_63", 50, 1.0},
+	{"เศษไม้", "ms_uiinv:item_64", 50, 1.0},
+	{"เศษเหล็ก", "ms_uiinv:item_65", 50, 1.0},
+	{"แท่งไม้", "ms_uiinv:item_66", 50, 1.0},
+	{"แท่งเหล็ก", "ms_uiinv:item_67", 50, 1.0},
 
-	{"กล้วย", "ms_uiinv:item_28", 40},
-	{"กระบองเพชร", "ms_uiinv:item_29", 40},
-	{"ทุเรียน", "ms_uiinv:item_30", 40},
-	{"ผักกาด", "ms_uiinv:item_31", 40},
-	{"กุ้งล็อบสเตอร์", "ms_uiinv:item_32", 40},
-	{"เครื่องมือซ่อมรถ", "ms_uiinv:item_33", 100},
-	{"เหรียญAFK", "ms_uiinv:item_34", 1000},
-    {"กล่องตีอาวุธv1", "ms_uiinv:item_35", 100},
-	{"ปอมปอมปูริน", "ms_uiinv:item_36", 100},
-	{"เป๋าปอมปอม", "ms_uiinv:item_37", 100},	
-	{"โปเชโกะ", "ms_uiinv:item_39", 100},
-	{"ปอมจะนั่ง", "ms_uiinv:item_40", 100},
-	{"ไออ้วง", "ms_uiinv:item_41", 100},
-	{"ผ้าพันแผล", "ms_uiinv:item_45", 100},
-	{"ผ้าพันแผลใหญ่", "ms_uiinv:item_78", 100},
-	{"pet", "ms_uiinv:item_46", 100},
+	{"กล้วย", "ms_uiinv:item_28", 40, 1.0},
+	{"กระบองเพชร", "ms_uiinv:item_29", 40, 1.0},
+	{"ทุเรียน", "ms_uiinv:item_30", 40, 1.0},
+	{"ผักกาด", "ms_uiinv:item_31", 40, 1.0},
+	{"กุ้งล็อบสเตอร์", "ms_uiinv:item_32", 40, 1.0},
+	{"เครื่องมือซ่อมรถ", "ms_uiinv:item_33", 100, 1.0},
+	{"เหรียญAFK", "ms_uiinv:item_34", 1000, 1.0},
+    {"กล่องตีอาวุธv1", "ms_uiinv:item_35", 100, 1.0},
+	{"ปอมปอมปูริน", "ms_uiinv:item_36", 100, 1.0},
+	{"เป๋าปอมปอม", "ms_uiinv:item_37", 100, 1.0},	
+	{"โปเชโกะ", "ms_uiinv:item_39", 100, 1.0},
+	{"ปอมจะนั่ง", "ms_uiinv:item_40", 100, 1.0},
+	{"ไออ้วง", "ms_uiinv:item_41", 100, 1.0},
+	{"ผ้าพันแผล", "ms_uiinv:item_45", 100, 1.0},
+	{"ผ้าพันแผลใหญ่", "ms_uiinv:item_78", 100, 1.0},
+	{"pet", "ms_uiinv:item_46", 100, 1.0},
 
-	{"หมวกชินนาม่อน", "ms_uiinv:item_72", 100},
-	{"เป๋าชินนาม่อน", "ms_uiinv:item_70", 100},
-	{"ถือชินนาม่อน", "ms_uiinv:item_71", 100},
-
-
-	{"กุญแจตู้เซฟ", "ms_uiinv:item_42", 100},
-	{"บลูปริ้นกุญแจตู้", "ms_uiinv:item_43", 100},
-
-    {"หมัดสายฟ้า", "ms_uiinv:item_47", 10},
-	{"หมัดไฟ", "ms_uiinv:item_49", 10},
-	{"ห่วงยางหมา", "ms_uiinv:item_51", 10},
-    {"หมาเกาะหัว", "ms_uiinv:item_52", 10},
-	{"เจ้าหมุน", "ms_uiinv:item_53", 10},
-	{"รองเท้าหมา", "ms_uiinv:item_55", 10},
-	{"แฟชั่นผู้เล่นใหม่", "ms_uiinv:item_56", 10},
-	{"บัตรฟามคูณสอง", "ms_uiinv:item_57", 100},
-	{"เหรียญดวงซวย", "ms_uiinv:item_58", 100},
-	{"หญ้า", "ms_uiinv:item_59", 1000},
-	{"แหวนดอกหญ้า", "ms_uiinv:item_61", 10},
+	{"หมวกชินนาม่อน", "ms_uiinv:item_72", 100, 1.0},
+	{"เป๋าชินนาม่อน", "ms_uiinv:item_70", 100, 1.0},
+	{"ถือชินนาม่อน", "ms_uiinv:item_71", 100, 1.0},
 
 
+	{"กุญแจตู้เซฟ", "ms_uiinv:item_42", 100, 1.0},
+	{"บลูปริ้นกุญแจตู้", "ms_uiinv:item_43", 100, 1.0},
 
-	{"เงินแดง", "ms_uiinv:item_50", 1000000},
+    {"หมัดสายฟ้า", "ms_uiinv:item_47", 10, 1.0},
+	{"หมัดไฟ", "ms_uiinv:item_49", 10, 1.0},
+	{"ห่วงยางหมา", "ms_uiinv:item_51", 10, 1.0},
+    {"หมาเกาะหัว", "ms_uiinv:item_52", 10, 1.0},
+	{"เจ้าหมุน", "ms_uiinv:item_53", 10, 1.0},
+	{"รองเท้าหมา", "ms_uiinv:item_55", 10, 1.0},
+	{"แฟชั่นผู้เล่นใหม่", "ms_uiinv:item_56", 10, 1.0},
+	{"บัตรฟามคูณสอง", "ms_uiinv:item_57", 100, 1.0},
+	{"เหรียญดวงซวย", "ms_uiinv:item_58", 100, 1.0},
+	{"หญ้า", "ms_uiinv:item_59", 1000, 1.0},
+	{"แหวนดอกหญ้า", "ms_uiinv:item_61", 10, 1.0},
+
+
+
+	{"เงินแดง", "ms_uiinv:item_50", 1000000, 0.0},
 
     //---->สกินส่วนตัว
-	{"กล่องสกิน193", "ms_uiinv:tae1", 10},
-	{ "กล่องสกิน76", "ms_uiinv:tae3", 10 },   //สกินหญิงโดเนท
-	{ "กล่องสกิน202", "ms_uiinv:tae4", 10 },  //สกินชายชุดนอน
-	{ "กล่องสกิน216", "ms_uiinv:tae5", 10 },  //สกินหญิงชุดนอน
-	{ "กล่องสกิน214", "ms_uiinv:tae6", 10 },  //สกินหญิงเสื้อบอล
-	{ "กล่องสกิน238", "ms_uiinv:tae7", 10 },  //สกินหญิงแคร์แบร์
-	{ "กล่องสกิน64", "ms_uiinv:tae8", 10 },    //สกินหญิงชินนาม่อน
-	{ "กล่องสกิน20", "ms_uiinv:item_0", 10 },  //สกินหญิงแคร์แบร์
-	{ "กล่องสกิน23", "ms_uiinv:item_0", 10 },    //สกินหญิงชินนาม่อน
+	{"กล่องสกิน193", "ms_uiinv:tae1", 10, 0.0 },
+	{ "กล่องสกิน76", "ms_uiinv:tae3", 10, 0.0 },   //สกินหญิงโดเนท
+	{ "กล่องสกิน202", "ms_uiinv:tae4", 10, 0.0 },  //สกินชายชุดนอน
+	{ "กล่องสกิน216", "ms_uiinv:tae5", 10, 0.0 },  //สกินหญิงชุดนอน
+	{ "กล่องสกิน214", "ms_uiinv:tae6", 10, 0.0 },  //สกินหญิงเสื้อบอล
+	{ "กล่องสกิน238", "ms_uiinv:tae7", 10, 0.0 },  //สกินหญิงแคร์แบร์
+	{ "กล่องสกิน64", "ms_uiinv:tae8", 10, 0.0 },    //สกินหญิงชินนาม่อน
+	{ "กล่องสกิน20", "ms_uiinv:item_0", 10, 0.0 },  //สกินหญิงแคร์แบร์
+	{ "กล่องสกิน23", "ms_uiinv:item_0", 10, 0.0 },    //สกินหญิงชินนาม่อน
 	
-	{"บัตรเทรดอาวุธ", "ms_uiinv:item_77", 10},
-	{"โคเคน", "ms_uiinv:item_76", 100},
+	{"บัตรเทรดอาวุธ", "ms_uiinv:item_77", 10, 1.0},
+	{"โคเคน", "ms_uiinv:item_76", 100, 1.0},
 
-	{ "GACHAPON-MONEY", "ms_uiinv:item_73", 500 },
-	{ "GACHAPON-BLACK", "ms_uiinv:item_74", 500 },
-	{ "GACHAPON-FASHION", "ms_uiinv:item_24", 500 },
+	{ "GACHAPON-MONEY", "ms_uiinv:item_73", 500, 1.0},
+	{ "GACHAPON-BLACK", "ms_uiinv:item_74", 500, 1.0},
+	{ "GACHAPON-FASHION", "ms_uiinv:item_24", 500, 1.0},
 
-	{ "บัตรฟามX2-3วัน", "ms_uiinv:item_20", 1 },
-    { "บัตรฟามX2-7วัน", "ms_uiinv:item_21", 1 }
+	{ "บัตรฟามX2-3วัน", "ms_uiinv:item_20", 1, 1.0},
+    { "บัตรฟามX2-7วัน", "ms_uiinv:item_21", 1, 1.0}
 	
 	
 };
@@ -1705,6 +1712,7 @@ new const Float:g_arrDrivingCheckpoints[][] = {
 //#include "system/MainGaragegaragecallcarv.pwn"
 #include "system/s_cf.pwn"
 //#include "system/playername.pwn"
+#include "system/trunk.pwn"
 //===================================//
 
 //Faction
@@ -1810,7 +1818,6 @@ public OnGameModeInit()
 	print("[MySQL]: Connection is successful.");
 
 	mysql_set_charset("tis620");
-
 
     Server_Load();
 	mysql_tquery(g_SQL, "SELECT * FROM `factions`", "Faction_Load", "");
@@ -5546,6 +5553,17 @@ Dialog:DIALOG_INVENTORYGIVE(playerid, response, listitem, inputtext[])
 			Dialog_Show(playerid, DIALOG_INVENTORYGIVE, DIALOG_STYLE_INPUT, invData[playerid][itemid][invItem], string, "เลือก", "ปิด");
 		    return 1;
 		}
+		new Float:Floatret;
+		Inventory_Items_KG(userid, Floatret);
+
+		new Float:kgret_getitem;
+		Inventory_GetItemWeightByName(invData[playerid][itemid][invItem], kgret_getitem);
+		if (Floatret + (kgret_getitem * amount) > GetPlayerMaxWeight(userid))
+		{
+	        format(string, sizeof(string), "{FFFFFF}%s ของผู้เล่นไอดีนี้เต็มแล้ว {FF0000}(%.1f/%.1f)", invData[playerid][itemid][invItem],(Floatret + (kgret_getitem * amount)),GetPlayerMaxWeight(userid));
+			Dialog_Show(playerid, DIALOG_INVENTORYGIVE, DIALOG_STYLE_INPUT, invData[playerid][itemid][invItem], string, "เลือก", "ปิด");
+		    return 1;
+		}
 
 		if (!IsPlayerNearPlayer(playerid, userid, 4.0))
 		{
@@ -6468,6 +6486,7 @@ AssignplayerData(playerid)
 	cache_get_value_name_int(0, "itemcode1", playerData[playerid][pITEMCODE1]);
 	cache_get_value_name_int(0, "Anims1", playerData[playerid][pAnims1]);
 	cache_get_value_name_int(0, "playerMarryOn", playerData[playerid][pMarryOn]);
+	cache_get_value_name_float(0, "playerMaxWeight", playerData[playerid][pMaxWeight]);
 	cache_get_value_name_int(0, "Animation", playerData[playerid][pAnimation]);
 	cache_get_value_name(0, "playerLatsPlay", playerData[playerid][pLatsPlay], 90);
 
@@ -6541,7 +6560,7 @@ UpdateplayerData(playerid)
 	`playerThirsty` = %.3f, `playerHungry` = %.3f, `playerHealth` = %.4f, `playerInjured` = %d, `playerInjuredTime` = %d, \
 	`playerFaction` = %d, `playerFactionRank` = %d, `playerPrisoned` = %d, `playerPrisonOut` = %d, `playerJailTime` = %d, \
 	`playerEntrance` = %d, `playerMaxItem` = %d, `playerItemAmount` = %d, `playerPhone` = %d, `playerVIP` = %d, \
-	`playerQuest` = %d, `playerQuestProgress` = %d, `playerWhitelist` = %d, `playerCoin` = %d, `GiftBox` = %d, `itemcode1` = %d, `Anims1` = %d, `playerMarryOn` = %d, `Animation` = %d WHERE `playerID` = %d",
+	`playerQuest` = %d, `playerQuestProgress` = %d, `playerWhitelist` = %d, `playerCoin` = %d, `GiftBox` = %d, `itemcode1` = %d, `Anims1` = %d, `playerMarryOn` = %d, `Animation` = %d, `playerMaxWeight` = %.1f WHERE `playerID` = %d",
 	playerData[playerid][pAdmin],
 	playerData[playerid][pMoney],
 	playerData[playerid][pBankMoney],
@@ -6581,6 +6600,7 @@ UpdateplayerData(playerid)
 	playerData[playerid][pAnims1],
 	playerData[playerid][pMarryOn],
 	playerData[playerid][pAnimation],
+	playerData[playerid][pMaxWeight],
 	playerData[playerid][pID]);
 	mysql_tquery(g_SQL, query);
 	return 1;
@@ -7399,10 +7419,15 @@ public Vehicle_Load()
 			cache_get_value_name_int(i, "carFaction", carData[vehicleid][carFaction]);
 			cache_get_value_name_float(i, "carHealth", carData[vehicleid][carHealth]);
 
+			new query[256];
+			mysql_format(g_SQL, query, sizeof(query), "SELECT * FROM `trunk` WHERE `trunkOwner` = '%d'", carData[vehicleid][carID]);
+			mysql_tquery(g_SQL, query, "Trunk_Load", "d", vehicleid);
+
 			if(carData[vehicleid][carFaction] >= 0)
 			{
 				cache_get_value_name_int(i, "carPrice", carData[vehicleid][carPrice]);
 				cache_get_value_name_int(i, "carLocked", carData[vehicleid][carLocked]);
+				cache_get_value_name_float(i, "carMaxWeight", carData[vehicleid][carMaxWeight]);
 				cache_get_value_name_int(i, "carPaintjob", carData[vehicleid][carPaintjob]);
 				cache_get_value_name_int(i, "carInterior", carData[vehicleid][carInterior]);
 				cache_get_value_name_int(i, "carWorld", carData[vehicleid][carWorld]);
@@ -7420,6 +7445,7 @@ public Vehicle_Load()
 				cache_get_value_name_int(i, "carMod12", carData[vehicleid][carMods][11]);
 				cache_get_value_name_int(i, "carMod13", carData[vehicleid][carMods][12]);
 				cache_get_value_name_int(i, "carMod14", carData[vehicleid][carMods][13]);
+				
 				ReloadVehicle(vehicleid);
 			}
 
@@ -8041,6 +8067,22 @@ IsABike(vehicleid)
 	}
 	return 0;
 }
+
+IsABoat(carid)
+{
+	switch (GetVehicleModel(carid))
+	{
+		case 430, 446, 452, 453, 454, 472, 473, 484, 493, 595: return 1;
+	}
+	return 0;
+}
+
+IsACar(vehicleid)
+{
+	if(!IsABike(vehicleid) && !IsABoat(vehicleid) && !IsAHelicopter(vehicleid) && !IsAPlane(vehicleid)) return 1;
+	return 0;
+}
+
 stock Gate_Operate(gateid)
 {
 	if (gateid != -1 && GateData[gateid][gateExists])
@@ -9328,6 +9370,15 @@ ResetVehicle(vehicleid)
 	{
 	    carData[vehicleid][carMods][i] = 0;
 	}
+
+	for (new j = 0; j < MAX_INVENTORY; j++) {
+		if (TrunkData[vehicleid][j][trunkExists])
+		{
+			TrunkData[vehicleid][j][trunkExists] = false;
+			TrunkData[vehicleid][j][trunkQuantity] = 0;
+			format(TrunkData[vehicleid][j][trunkItemName], 32, "");
+		}
+	}
 }
 
 GetVehicleStashCapacity(vehicleid, item)
@@ -9516,6 +9567,7 @@ public OnPlayerSpawnVehicle(playerid, parked)
 		    cache_get_value_name_int(0, "carPrice", carData[vehicleid][carPrice]);
 		    cache_get_value_name_int(0, "carTickets", carData[vehicleid][carTickets]);
 		    cache_get_value_name_int(0, "carLocked", carData[vehicleid][carLocked]);
+			cache_get_value_name_float(0, "carMaxWeight", carData[vehicleid][carMaxWeight]);
 		    cache_get_value_name_float(0, "carHealth", carData[vehicleid][carHealth]);
 		    cache_get_value_name_int(0, "carPaintjob", carData[vehicleid][carPaintjob]);
 		    cache_get_value_name_int(0, "carInterior", carData[vehicleid][carInterior]);
@@ -9554,6 +9606,10 @@ public OnPlayerSpawnVehicle(playerid, parked)
 			adminVehicle[vehicleid] = false;
 
 			ReloadVehicle(vehicleid);
+
+			new query[256];
+			mysql_format(g_SQL, query, sizeof(query), "SELECT * FROM `trunk` WHERE `trunkOwner` = '%d'", carData[vehicleid][carID]);
+			mysql_tquery(g_SQL, query, "Trunk_Load", "d", vehicleid);
 
 		    if(!parked)
 			{
@@ -10528,7 +10584,7 @@ Dialog:DIALOG_REPAIR(playerid, response, listitem, inputtext[])
 				new id = Inventory_Add(playerid, "เครื่องมือซ่อมรถ", 1);
 
 				if (id == -1)
-				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				GivePlayerMoneyEx(playerid, -1000);
 				SendClientMessageEx(playerid, COLOR_GREEN, "[อู่ซ่อมรถ] {FFFFFF}คุณได้ซื้อเครื่องมือซ่อมรถเรียบร้อย ราคารวม: {FF0000}-%s", FormatMoney(1000));
@@ -16586,7 +16642,7 @@ Dialog:DIALOG_BUYFASHION(playerid, response, listitem, inputtext[])
 				new id = Inventory_Add(playerid, itemname, 1);
 
 				if (id == -1)
-				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				GivePlayerMoneyEx(playerid, -price);
 
@@ -16607,7 +16663,7 @@ Dialog:DIALOG_BUYFASHION(playerid, response, listitem, inputtext[])
 				new id = Inventory_Add(playerid, itemname, 1);
 
 				if (id == -1)
-				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				GivePlayerMoneyEx(playerid, -price);
 
@@ -16628,7 +16684,7 @@ Dialog:DIALOG_BUYFASHION(playerid, response, listitem, inputtext[])
 				new id = Inventory_Add(playerid, itemname, 1);
 
 				if (id == -1)
-				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				GivePlayerMoneyEx(playerid, -price);
 
@@ -17110,7 +17166,7 @@ CMD:giveitem(playerid,params[])
 		new id = Inventory_Add(userid, itemData[i][itemName], amount);
 
 		if (id == -1)
-		    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+		    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 //	    Inventory_Add(userid, itemData[i][itemName], amount);
 	    SendAdminMessage(COLOR_ADMIN, "AdmLog: %s ได้ให้ไอเท็ม %s จำนวน %d กับ %s", GetPlayerNameEx(playerid), item, amount, GetPlayerNameEx(userid));
@@ -19123,19 +19179,15 @@ public OnPlayerUseItem(playerid, const name[])
 		{
 		    case 0: // ส้ม
 		    {
-				Inventory_Add(playerid, "ปูน", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ปูน", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ปูน +10 จากการเปิดกล่องงานดำ");
 		    }
 		    case 1: // หอย
 		    {
-				Inventory_Add(playerid, "โคเคน", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "โคเคน", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ โคเคน +10 จากการเปิดกล่องงานดำ");
 		    }
@@ -19151,73 +19203,57 @@ public OnPlayerUseItem(playerid, const name[])
 		{
 		    case 0: // ส้ม
 		    {
-				Inventory_Add(playerid, "ส้ม", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ส้ม", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ส้ม +10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 1: // หอย
 		    {
-				Inventory_Add(playerid, "หอย", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "หอย", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ หอย +10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 2: // เนื้อไก่
 		    {
-				Inventory_Add(playerid, "เนื้อไก่", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "เนื้อไก่", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ เนื้อไก่+10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 3: // เนื้อวัว
 		    {
-				Inventory_Add(playerid, "เนื้อวัว", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "เนื้อวัว", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ เนื้อวัว +10จากการเปิดกล่องงานขาว");
 		    }
 		    case 4: // ปลาเก๋า
 		    {
-				Inventory_Add(playerid, "ปลาเก๋า", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ปลาเก๋า", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ปลาเก๋า +10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 5: // ปลาแซลม่อน
 		    {
-				Inventory_Add(playerid, "ปลาแซลม่อน", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ปลาแซลม่อน", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ปลาแซลม่อน +10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 6: // ปลากระเบน
 		    {
-				Inventory_Add(playerid, "ปลากระเบน", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ปลากระเบน", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ปลากระเบน +10 จากการเปิดกล่องงานขาว");
 		    }
 		    case 7: // ปลาฉลาม
 		    {
-				Inventory_Add(playerid, "ปลาฉลาม", 10);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "ปลาฉลาม", 10) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับ ปลาฉลาม +10 จากการเปิดกล่องงานขาว");
 		    }
@@ -19336,46 +19372,36 @@ public OnPlayerUseItem(playerid, const name[])
 		{
 		    case 0: // กล่องตีอาวุธ
 		    {
-				Inventory_Add(playerid, "กล่องตีอาวุธ", 1);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "กล่องตีอาวุธ", 1) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับกล่องตีอาวุธจากการเปิดกล่องตีอาวุธ");
 		    }
 		    case 1: // กล่องตีไม้เบส
 		    {
-				Inventory_Add(playerid, "กล่องตีไม้เบสบอล", 1);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "กล่องตีไม้เบสบอล", 1) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับกล่องตีไม้เบสบอลจากการเปิดกล่องตีอาวุธ");
 		    }
 		    case 2: // กล่องตีไม้สนุ๊ก
 		    {
-				Inventory_Add(playerid, "กล่องตีไม้สนุ๊ก", 1);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "กล่องตีไม้สนุ๊ก", 1) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับกล่องตีไม้สนุ๊กจากการเปิดกล่องตีอาวุธ");
 		    }
 		    case 3: // กล่องตีไม้กอล์ฟ
 		    {
-				Inventory_Add(playerid, "กล่องตีไม้กอล์ฟ", 1);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "กล่องตีไม้กอล์ฟ", 1) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับกล่องตีไม้กอล์ฟจากการเปิดกล่องตีอาวุธ");
 		    }
 		    case 4: // กล่องตีคาตานะ
 		    {
-				Inventory_Add(playerid, "กล่องตีคาตานะ", 1);
-
-				if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
-					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+				if (Inventory_Add(playerid, "กล่องตีคาตานะ", 1) == -1)
+					return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 				return SendClientMessage(playerid, COLOR_WHITE, "{FFFFFF}[{FFFF33}+{FFFFFF}]คุณได้รับกล่องตีคาตานะจากการเปิดกล่องตีอาวุธ");
 		    }
@@ -20880,7 +20906,9 @@ public OpenInventory(playerid)
             }
             else
             {
-                format(string, sizeof(string), "%s\t{D0AEEB}({FFFFFF}%d{D0AEEB})\tไม่มี\n", invData[playerid][i][invItem], invData[playerid][i][invQuantity]);
+				new Float:kgret;
+				Inventory_GetItemWeightByName(invData[playerid][i][invItem], kgret);
+                format(string, sizeof(string), "%s\t{D0AEEB}({FFFFFF}%d/%.1f{D0AEEB})\tไม่มี\n", invData[playerid][i][invItem], invData[playerid][i][invQuantity], (kgret * invData[playerid][i][invQuantity]));
                 strcat(string2, string);
             }
    			format(var, sizeof(var), "itemlist%d", count);
@@ -20893,7 +20921,9 @@ public OpenInventory(playerid)
 		SendClientMessage(playerid, COLOR_RED, "[ระบบ] {FFFFFF}คุณไม่มีไอเท็มอยู่ในตัวเลย");
 		return 1;
 	}
-	format(string, sizeof(string), "ชื่อ\tความจุ (%d/%d)\tความทนทาน\n%s", Inventory_Items(playerid), playerData[playerid][pMaxItem], string2);
+	new Float:kgret_all;
+	Inventory_Items_KG(playerid, kgret_all);
+	format(string, sizeof(string), "ชื่อ\tความจุ (%d [%.1f]/%d [%.1f])\tความทนทาน\n%s", Inventory_Items(playerid), kgret_all, playerData[playerid][pMaxItem], GetPlayerMaxWeight(playerid), string2);
 	return Dialog_Show(playerid, DIALOG_INVENTORY, DIALOG_STYLE_TABLIST_HEADERS, "[กระเป๋า]", string, "เลือก", "ปิด");
 }
 /*forward OpenInventory(playerid);
@@ -20981,12 +21011,46 @@ Inventory_GetFreeID(playerid)
 	if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
 		return -1;
 
+	new Float:kgall;
+	Inventory_Items_KG(playerid, kgall);
+	if (kgall >= GetPlayerMaxWeight(playerid))
+		return -1;
+
 	for (new i = 0; i < MAX_INVENTORY; i ++)
 	{
 	    if (!invData[playerid][i][invExists])
 	        return i;
 	}
 	return -1;
+}
+
+Inventory_Items_KG(playerid, &Float:retkg)
+{
+    new Float:kgall = 0.0;
+	retkg = 0.0;
+
+    for (new i = 0; i != MAX_INVENTORY; i ++) if (invData[playerid][i][invExists])
+	{
+		new Float:kgret_getitem;
+		Inventory_GetItemWeightByName(invData[playerid][i][invItem], kgret_getitem);
+        kgall += kgret_getitem * invData[playerid][i][invQuantity];
+	}
+	retkg = kgall;
+	return 1;
+}
+
+Inventory_GetItemWeightByName(const item[], &Float:retkg)
+{
+	retkg = 0.0;
+	for (new i = 0; i < sizeof(itemData); i ++) 
+	{
+		if (!strcmp(itemData[i][itemName], item)) 
+		{
+			retkg = itemData[i][itemWeight]; 
+			return 1;
+		}
+	}
+	return 0;
 }
 
 Inventory_Items(playerid)
@@ -21112,6 +21176,13 @@ Inventory_Add(playerid, const item[], quantity = 1, weapon = 0)
         {
             itemid = Inventory_GetFreeID(playerid);
 
+			new Float:kgall;
+			Inventory_Items_KG(playerid, kgall);
+
+			if (kgall + (itemData[Item_GetIDFromName(item)][itemWeight] * quantity) > playerData[playerid][pMaxWeight]) {
+				return -1;
+			}
+
             if (itemid != -1)
             {
                 invData[playerid][itemid][invExists]   = true;
@@ -21137,6 +21208,12 @@ Inventory_Add(playerid, const item[], quantity = 1, weapon = 0)
         {
             itemid = Inventory_GetFreeID(playerid);
 
+			new Float:kgall;
+			Inventory_Items_KG(playerid, kgall);
+
+			if (kgall + (itemData[Item_GetIDFromName(item)][itemWeight] * quantity) > playerData[playerid][pMaxWeight]) {
+				return -1;
+			}
             if (itemid != -1)
             {
                 invData[playerid][itemid][invExists]   = true;
@@ -21166,6 +21243,14 @@ Inventory_Add(playerid, const item[], quantity = 1, weapon = 0)
         }
         else
         {
+			new Float:kgall;
+			Inventory_Items_KG(playerid, kgall);
+
+			printf("%f > %f", kgall + (itemData[Item_GetIDFromName(item)][itemWeight] * quantity), playerData[playerid][pMaxWeight]);
+			if (kgall + (itemData[Item_GetIDFromName(item)][itemWeight] * quantity) > playerData[playerid][pMaxWeight]) {
+				return -1;
+			}
+
             mysql_format(g_SQL, string, sizeof(string),
                 "UPDATE `inventory` SET `invQuantity` = `invQuantity` + %d WHERE `invOwner` = '%d' AND `invID` = '%d'",
                 quantity, playerData[playerid][pID], invData[playerid][itemid][invID]);
@@ -29448,7 +29533,7 @@ PlayerPoonUnfreeze(playerid)
 
 	if (id == -1)
 	{
-	    SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+	    SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 		return 1;
 	}
 
@@ -32455,4 +32540,13 @@ public OnCheckCard(playerid)
         SendClientMessage(playerid, -1, msg);
     }
     return 1;
+}
+
+stock Item_GetIDFromName(const name[])
+{
+    for (new i = 0; i < sizeof(itemData); i++)
+    {
+        if (!strcmp(itemData[i][itemName], name)) return i;
+    }
+    return -1;
 }

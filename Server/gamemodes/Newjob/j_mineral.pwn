@@ -126,6 +126,11 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 						if (Inventory_Items(playerid) >= playerData[playerid][pMaxItem])
 							return SendClientMessageEx(playerid, COLOR_RED, "[ แจ้งเตือน ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
+						new Float:kgret;
+						Inventory_Items_KG(playerid, kgret);
+						if (kgret >= GetPlayerMaxWeight(playerid))
+							return SendClientMessageEx(playerid, COLOR_RED, "[ แจ้งเตือน ] {FFFFFF}น้ำหนักของกระเป๋าไม่เพียงพอ (%.1f/%.1f)", kgret, GetPlayerMaxWeight(playerid));
+
                         OREPSData[i][OREPSStatus] = 1;
                         SetPVarInt(playerid, "playerOREPSID", i);
                         SetPVarInt(playerid, "OREPSPicking", 1);

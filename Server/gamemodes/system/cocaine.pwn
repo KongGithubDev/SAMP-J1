@@ -566,7 +566,7 @@ PlayerCOCAINEUnfreeze(playerid, number)
 	new id = Inventory_Add(playerid, COCAINENAME, 1);
 
 	if (id == -1)
-	    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d)", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
+	    return SendClientMessageEx(playerid, COLOR_RED, "[ระบบ] {FFFFFF}ความจุของกระเป๋าไม่เพียงพอ (%d/%d) หรือน้ำหนักกระเป๋าไม่เพียงพอ", Inventory_Items(playerid), playerData[playerid][pMaxItem]);
 
 	GivePlayerExp(playerid, 10);
 	SendClientMessage(playerid, COLOR_WHITE, "คุณได้รับ {FF0000}"#COCAINENAME" +1");

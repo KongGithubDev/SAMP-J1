@@ -219,6 +219,7 @@ public ShowPlayerLockerTD(playerid, first)
 
 CreateInvLocker(playerid, count, page)
 {
+	#pragma unused count
 	//ฝั่งกระเป๋า //////////////////////////////////////////////////////
 	//item txd
 	if (!createLockerTD[playerid])
@@ -386,6 +387,7 @@ public CreateLockerItem(playerid, page)
 
 ClearLockerItem(playerid, d = false)
 {
+	#pragma unused d
 	for (new i=61;i<121;i++)
 	{
 		PlayerTextDrawHide(playerid, Locker_TD[playerid][i]);
@@ -395,6 +397,7 @@ ClearLockerItem(playerid, d = false)
 
 ClearInvItem(playerid, d=true)
 {
+	#pragma unused d
 	for (new i=1;i<61;i++)
 	{
 		PlayerTextDrawHide(playerid, Locker_TD[playerid][i]);

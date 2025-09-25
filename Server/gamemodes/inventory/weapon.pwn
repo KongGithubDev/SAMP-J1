@@ -32,6 +32,7 @@ static Float:x = 1557.2289, Float:y = -1364.3022, Float:z = 329.4535;
 static weaponCountState[MAX_PLAYERS];
 static weaponInvIdx[MAX_PLAYERS];
 static weaponRepairName[MAX_PLAYERS][];
+#pragma unused weaponRepairName
 static repairWeaponIndex[MAX_PLAYERS]; 
 
 enum e_WEAPON_BROKE_DATA {
@@ -236,6 +237,7 @@ hook OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 PlayerClickItem(playerid, itemid, name[])
 {
+    #pragma unused name
 	if (itemid >= 0 && itemid < MAX_INVENTORY)
 	{
 		weaponInvIdx[playerid] = itemid;
