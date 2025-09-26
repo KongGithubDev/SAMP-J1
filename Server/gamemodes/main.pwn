@@ -7427,7 +7427,7 @@ public Vehicle_Load()
 			{
 				cache_get_value_name_int(i, "carPrice", carData[vehicleid][carPrice]);
 				cache_get_value_name_int(i, "carLocked", carData[vehicleid][carLocked]);
-				cache_get_value_name_float(i, "carMaxWeight", carData[vehicleid][carMaxWeight]);
+				//cache_get_value_name_float(i, "carMaxWeight", carData[vehicleid][carMaxWeight]);
 				cache_get_value_name_int(i, "carPaintjob", carData[vehicleid][carPaintjob]);
 				cache_get_value_name_int(i, "carInterior", carData[vehicleid][carInterior]);
 				cache_get_value_name_int(i, "carWorld", carData[vehicleid][carWorld]);
@@ -7446,6 +7446,8 @@ public Vehicle_Load()
 				cache_get_value_name_int(i, "carMod13", carData[vehicleid][carMods][12]);
 				cache_get_value_name_int(i, "carMod14", carData[vehicleid][carMods][13]);
 				
+				carData[vehicleid][carMaxWeight] = TrunkModelData[carData[vehicleid][carModel] - 400][TrunkModelG];
+
 				ReloadVehicle(vehicleid);
 			}
 
@@ -9567,7 +9569,7 @@ public OnPlayerSpawnVehicle(playerid, parked)
 		    cache_get_value_name_int(0, "carPrice", carData[vehicleid][carPrice]);
 		    cache_get_value_name_int(0, "carTickets", carData[vehicleid][carTickets]);
 		    cache_get_value_name_int(0, "carLocked", carData[vehicleid][carLocked]);
-			cache_get_value_name_float(0, "carMaxWeight", carData[vehicleid][carMaxWeight]);
+			//cache_get_value_name_float(0, "carMaxWeight", carData[vehicleid][carMaxWeight]);
 		    cache_get_value_name_float(0, "carHealth", carData[vehicleid][carHealth]);
 		    cache_get_value_name_int(0, "carPaintjob", carData[vehicleid][carPaintjob]);
 		    cache_get_value_name_int(0, "carInterior", carData[vehicleid][carInterior]);
@@ -9601,6 +9603,8 @@ public OnPlayerSpawnVehicle(playerid, parked)
 		    carData[vehicleid][carObjects][0] = INVALID_OBJECT_ID;
 		    carData[vehicleid][carObjects][1] = INVALID_OBJECT_ID;
 		    carData[vehicleid][carTimer] = -1;
+
+			carData[vehicleid][carMaxWeight] = TrunkModelData[carData[vehicleid][carModel] - 400][TrunkModelG];
 
 			cache_get_value_name_float(0, "carFuel", vehicleFuel[vehicleid]);
 			adminVehicle[vehicleid] = false;

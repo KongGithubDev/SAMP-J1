@@ -14,6 +14,17 @@ enum TrunkDataEnum
 }
 new TrunkData[MAX_VEHICLES][MAX_INVENTORY][TrunkDataEnum];
 
+enum TrunkModelDataEnum {
+	TrunkModelID,
+	Float:TrunkModelG
+};
+
+new const TrunkModelData[][TrunkModelDataEnum] =
+{
+	{411, 500.0}, //50 KG
+	{412, 1000.0}	//100 KG
+};
+
 hook OnGameModeInit()
 {
     for (new i = 0; i < MAX_VEHICLES; i++) {

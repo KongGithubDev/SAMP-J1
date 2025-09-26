@@ -1907,6 +1907,14 @@
 			<member name="C:trunkQuantity" value="34">
 			</member>
 		</member>
+		<member name="T:TrunkModelDataEnum" value="2">
+			<tagname value="TrunkModelDataEnum"/>
+			<member name="C:TrunkModelID" value="0">
+			</member>
+			<member name="C:TrunkModelG" value="1">
+				<tagname value="Float"/>
+			</member>
+		</member>
 		<member name="T:VEHICLE_DATA" value="2">
 			<tagname value="VEHICLE_DATA"/>
 			<member name="C:vFuel" value="0">
@@ -4801,6 +4809,10 @@
 			<referrer name="Trunk_Count"/>
 			<referrer name="Trunk_SetQuantity"/>
 			<referrer name="ResetVehicle"/>
+		</member>
+		<member name="F:TrunkModelData">
+			<referrer name="Vehicle_Load"/>
+			<referrer name="OnPlayerSpawnVehicle"/>
 		</member>
 		<member name="F:TrunkTD">
 			<tagname value="PlayerText"/>
@@ -34195,6 +34207,8 @@
 			<dependency name="ReloadVehicle"/>
 			<dependency name="ResetVehicle"/>
 			<dependency name="SendClientMessageEx"/>
+			<dependency name="TrunkModelData"/>
+			<dependency name="TrunkModelG"/>
 			<dependency name="WC_CreateVehicle"/>
 			<dependency name="adminVehicle"/>
 			<dependency name="cache_get_row_count"/>
@@ -43699,6 +43713,8 @@
 			<dependency name="operator&lt;(Float:,_:)"/>
 			<dependency name="OPVD_SetVehicleHealth"/>
 			<dependency name="ReloadVehicle"/>
+			<dependency name="TrunkModelData"/>
+			<dependency name="TrunkModelG"/>
 			<dependency name="WC_CreateVehicle"/>
 			<dependency name="cache_get_row_count"/>
 			<dependency name="cache_get_value_name_float"/>
